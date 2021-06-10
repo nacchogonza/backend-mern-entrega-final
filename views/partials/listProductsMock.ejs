@@ -1,0 +1,32 @@
+
+  <h3 class="text-primary">Vista de Productos</h1>
+  <div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Title</th>
+        <th scope="col">Price</th>
+        <th scope="col">Foto</th>
+      </tr>
+    </thead>
+    <tbody class="align-middle">
+      <% if (!productsMock.length) { %>
+        <div style="overflow: hidden; box-sizing: border-box; text-align: center;">
+          <div class="bg-warning" style="padding: 5px; text-align: center;">
+            <h3>No se encontraron productos cargados</h1>
+          </div>
+        </div>
+      <% }; %> 
+      <% productsMock.forEach(function(product) { %>
+        <tr>
+          <td style="vertical-align: middle;"><%= product.title %></td>
+          <td style="vertical-align: middle;">$ <%= product.price %></td>
+          <td class="w-25">
+            <img src=<%= product.thumbnail %> style="width: 50px;" />
+          </td>
+        </tr>
+     <% }); %> 
+      
+    </tbody>
+  </table>
+  </div>
