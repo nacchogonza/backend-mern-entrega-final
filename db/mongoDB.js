@@ -109,7 +109,7 @@ export const findMessages = async () => {
     const dataJson = JSON.parse(JSON.stringify(data))
     /* normalizador */
     const normalizedData = normalize(dataJson, [messages])
-    print(normalizedData)
+    // print(normalizedData)
 
 
     return normalizedData;

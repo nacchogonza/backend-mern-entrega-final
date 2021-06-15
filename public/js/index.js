@@ -58,8 +58,8 @@ socket.on('messages', data => {
     const denormalizedDataLength = JSON.stringify(denormalizedData).length
     console.log(`denormalizedDataLength`, denormalizedDataLength)
     const compressionRate = (normalizedDataLength * 100) / denormalizedDataLength
-    console.log(`compressionRate`, Math.round(compressionRate))
-    const html2 = `<h3>Porcentaje de compresión: ${Math.round(compressionRate)}%</h3>`
+    console.log(`compressionRate`, Math.round(100 - compressionRate))
+    const html2 = `<h3>Porcentaje de compresión: ${Math.round(100 -compressionRate)}%</h3>`
     document.getElementById('compressionDiv').innerHTML = html2;
     render(denormalizedData);
   }
