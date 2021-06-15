@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "entregable-20",
+  "name": "entregable-22",
   "version": "1.0.0",
   "description": "Entregable para la clase 20",
   "main": "./src/index.js",
@@ -16,6 +16,7 @@
     "knex": "^0.95.6",
     "mongoose": "^5.12.12",
     "mysql": "^2.18.1",
+    "normalizr": "^3.6.1",
     "socket.io": "^4.0.1"
   }
 }

@@ -1,12 +1,32 @@
 <div class="container-fluid mt-3">
   <h1>App de Productos - Chat</h1>
+  <div id="compressionDiv"></div>
 
   <div id="messages"></div>
   <br>
 
-  <form class="form-inline" onsubmit="return addMessage(this)" autocomplete="off">
-    <input type="text" id="username" class="form-control my-2 mr-2" placeholder="Tu Nombre">
-    <input type="text" id="texto" class="form-control my-2 mr-2" placeholder="Cuéntanos algo...">
+  <form onsubmit="return addMessage(this)" autocomplete="off">
+    <div class="form-group">
+      <input type="text" id="userEmail" class="form-control my-2 mr-2" placeholder="Tu Email">
+    </div>
+    <div class="form-group">
+      <input type="text" id="username" class="form-control my-2 mr-2" placeholder="Tu Nombre">
+    </div>
+    <div class="form-group">
+      <input type="text" id="userLastName" class="form-control my-2 mr-2" placeholder="Tu Apellido">
+    </div>
+    <div class="form-group">
+      <input type="text" id="userAge" class="form-control my-2 mr-2" placeholder="Tu Edad">
+    </div>
+    <div class="form-group">
+      <input type="text" id="alias" class="form-control my-2 mr-2" placeholder="Tu Alias">
+    </div>
+    <div class="form-group">
+      <input type="text" id="avatar" class="form-control my-2 mr-2" placeholder="Tu Avatar">
+    </div>
+    <div class="form-group">
+      <input type="text" id="texto" class="form-control my-2 mr-2" placeholder="Cuéntanos algo...">
+    </div>
     <input class="btn btn-primary my-2" type="submit" value="Enviar!">
   </form>
 </div>
