@@ -94,3 +94,15 @@ function addMessage(e) {
 
     return false;
 }
+
+function loginUser(e) {
+  const user = document.getElementById('userLogin').value
+  const password = document.getElementById('passwordLogin').value
+  window.location.assign(`/login?username=${user}&password=${password}`)
+  return false 
+}
+
+function logoutUser(e) {
+  window.location.assign(`/logout`)
+  return false 
+}

@@ -11,6 +11,9 @@ import {
 } from "../db/mongoDB.js";
 import faker from "faker";
 
+import cookieParser from "cookie-parser";
+import session from "express-session";
+
 const app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
@@ -20,12 +23,27 @@ connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser())
+
+app.use(session({
+  secret: 'shhhhhhhhhhhhhhhhhhhhh',
+  resave: false,
+  saveUninitialized: false
+}))
 
 app.set("view engine", "ejs");
 
 app.use("/api", routerApi);
 
 app.use("/", express.static("public"));
+
+const auth = (req, res, next) => {
+  if (req.session && req.session.user === 'nacho' && req.session.admin) {
+    return next();
+  } else {
+    return res.sendStatus(401);
+  }
+}
 
 io.on("connection", async (socket) => {
   console.log("Nuevo cliente conectado!");
@@ -47,8 +65,16 @@ io.on("connection", async (socket) => {
 
 app.get("/", async (req, res) => {
   const data = await findProducts();
+  res.render("pages/login", {
+    products: data,
+  });
+});
+
+app.get("/home", auth, async (req, res) => {
+  const data = await findProducts();
   res.render("pages/products", {
     products: data,
+    user: req.session.user
   });
 });
 
@@ -69,6 +95,24 @@ app.get("/vista", async (req, res) => {
     productsMock: data,
   });
 });
+
+app.get('/login', (req, res) => {
+  console.log(req.query)
+  if (!req.query.username || !req.query.password) {
+    res.send('login failed: username & password are required')
+  } else if (req.query.username === 'nacho' || req.query.password === "123456") {
+    req.session.user = "nacho";
+    req.session.admin = true;
+    res.redirect("/home")
+  } else {
+    res.send('login failed: wrong username or password')
+  }
+})
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/');
+})
 
 const PORT = 8080;
 

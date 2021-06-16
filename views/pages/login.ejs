@@ -1,0 +1,20 @@
+<%- include('../partials/topLogin') %>
+
+
+<div style="padding: 20px;">
+  <!-- <form action="/api/productos" method="post"> -->
+  <form onsubmit="return loginUser(this)">
+    <div class="form-group">
+      <label for="userLogin" class="font-italic">Usuario</label>
+      <input type="text" class="form-control" name="userLogin" id="userLogin" placeholder="Usuario">
+    </div>
+    <div class="form-group">
+      <label for="passwordLogin">Contraseña</label>
+      <input type="password" class="form-control" name="passwordLogin" id="passwordLogin" placeholder="Password">
+    </div>
+    <input type="hidden" name="form" value="1" />
+    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+  </form>
+</div>
+
+<%- include('../partials/bottom') %>
