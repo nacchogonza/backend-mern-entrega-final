@@ -1,0 +1,16 @@
+<%- include('../partials/topLogin') %>
+
+<div class="text-center">
+  <h3>
+    Hasta luego <%= user %>!
+  </h3>
+</div>
+
+<%- include('../partials/bottom') %>
+
+<script>
+  setTimeout(() => {
+    window.location.assign(`/logout`)
+  return false 
+  }, 2000);
+</script>

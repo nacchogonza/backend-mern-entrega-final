@@ -28,7 +28,10 @@ app.use(cookieParser())
 app.use(session({
   secret: 'shhhhhhhhhhhhhhhhhhhhh',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60
+  }
 }))
 
 app.set("view engine", "ejs");
@@ -41,7 +44,7 @@ const auth = (req, res, next) => {
   if (req.session && req.session.user === 'nacho' && req.session.admin) {
     return next();
   } else {
-    return res.sendStatus(401);
+    res.redirect("/")
   }
 }
 
@@ -96,6 +99,12 @@ app.get("/vista", async (req, res) => {
   });
 });
 
+app.get("/preLogout", auth, async (req, res) => {
+  res.render("pages/preLogout", {
+    user: req.session.user
+  });
+});
+
 app.get('/login', (req, res) => {
   console.log(req.query)
   if (!req.query.username || !req.query.password) {
@@ -111,7 +120,7 @@ app.get('/login', (req, res) => {
 
 app.get('/logout', (req, res) => {
   req.session.destroy();
-  res.redirect('/');
+    res.redirect("/")
 })
 
 const PORT = 8080;
