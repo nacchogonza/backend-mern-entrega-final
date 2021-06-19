@@ -106,3 +106,11 @@ function logoutUser(e) {
   window.location.assign(`/preLogout`)
   return false 
 }
+
+function signUpUser(e) {
+  const user = document.getElementById('userSignIn').value
+  const password = document.getElementById('passwordSignIn').value
+  const direccion = document.getElementById('direccionSignIn').value
+  window.location.assign(`/login?username=${user}&password=${password}`)
+  return false 
+}

@@ -14,6 +14,12 @@ import faker from "faker";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 
+import MongoStore from 'connect-mongo';
+
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+const URL =
+  "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
+
 const app = express();
 const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
@@ -26,11 +32,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 app.use(session({
+  store: MongoStore.create({
+    mongoUrl: URL,
+    mongoOptions: advancedOptions,
+  }),
   secret: 'shhhhhhhhhhhhhhhhhhhhh',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60
+    maxAge: 1000 * 60 * 10 /* TIEMPO DE SESION: 10 MINUTOS */
   }
 }))
 
@@ -67,10 +77,12 @@ io.on("connection", async (socket) => {
 });
 
 app.get("/", async (req, res) => {
+  res.render("pages/login");
+});
+
+app.get("/sign-up", async (req, res) => {
   const data = await findProducts();
-  res.render("pages/login", {
-    products: data,
-  });
+  res.render("pages/register");
 });
 
 app.get("/home", auth, async (req, res) => {
@@ -119,8 +131,9 @@ app.get('/login', (req, res) => {
 })
 
 app.get('/logout', (req, res) => {
-  req.session.destroy();
+  req.session.destroy(err => {
     res.redirect("/")
+  });
 })
 
 const PORT = 8080;
