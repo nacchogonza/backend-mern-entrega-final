@@ -9,6 +9,8 @@ import {
   insertMessage,
   findProducts,
   insertProduct,
+  findUsuarios, 
+  insertUsuario,
 } from "../db/mongoDB.js";
 import faker from "faker";
 
@@ -22,15 +24,17 @@ import bCrypt from 'bcrypt';
 import passport from "passport";
 import {Strategy as LocalStrategy} from 'passport-local';
 
-const usuarios = [];
+//const usuarios = [];
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const URL =
   "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
 
-passport.use('register', new LocalStrategy({ passReqToCallback: true }, (req, username, password, done) => {
+passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (req, username, password, done) => {
 
   const { direccion } = req.body
+
+  const usuarios = await findUsuarios();
 
   const usuario = usuarios.find(usuario => usuario.username == username)
   if (usuario) {
@@ -42,12 +46,14 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true }, (req, us
     password,
     direccion,
   }
-  usuarios.push(user)
+  await insertUsuario(user)
 
   return done(null, user)
 }));
 
-passport.use('login', new LocalStrategy((username, password, done) => {
+passport.use('login', new LocalStrategy(async (username, password, done) => {
+
+  const usuarios = await findUsuarios();
 
   const user = usuarios.find(usuario => usuario.username == username)
 
@@ -68,7 +74,8 @@ passport.serializeUser(function (user, done) {
   done(null, user.username);
 });
 
-passport.deserializeUser(function (username, done) {
+passport.deserializeUser(async function (username, done) {
+  const usuarios = await findUsuarios();
   const usuario = usuarios.find(usuario => usuario.username == username)
   done(null, usuario);
 });
@@ -162,7 +169,7 @@ app.get("/home", isAuth, async (req, res) => {
   const data = await findProducts();
   res.render("pages/products", {
     products: data,
-    user: req.session.user
+    user: req.session.passport.user
   });
 });
 

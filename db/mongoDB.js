@@ -79,10 +79,29 @@ const productosSchema = new mongoose.Schema({
   },
 });
 
+const usuariosSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    require: true,
+    max: 255,
+  },
+  password: {
+    type: String,
+    require: true,
+    max: 255,
+  },
+  direccion: {
+    type: String,
+    require: true,
+    max: 255,
+  },
+});
+
 /* MODELS */
 
 const DaoMensajes = mongoose.model("mensajes", mensajesSchema);
 const DaoProductos = mongoose.model("productos", productosSchema);
+const DaoUsuarios = mongoose.model("usuarios", usuariosSchema);
 
 /* DB CONNECT */
 
@@ -196,5 +215,28 @@ export const insertProduct = async (newProduct) => {
     });
   } catch (error) {
     console.log("Error al insertar mensaje: ", error);
+  }
+};
+
+/* USUARIOS */
+
+export const findUsuarios = async () => {
+  try {
+    const users = await DaoUsuarios.find({});
+    return users;
+  } catch (error) {
+    console.log("Error al obtener usuarios: ", error);
+  }
+};
+
+export const insertUsuario = async (newUser) => {
+  try {
+    return await DaoUsuarios.create({
+      username: newUser.username,
+      password: newUser.password,
+      direccion: newUser.direccion,
+    });
+  } catch (error) {
+    console.log("Error al insertar usuario: ", error);
   }
 };
