@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 import { routerApi } from "./RouterApi.js";
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
@@ -16,9 +17,61 @@ import session from "express-session";
 
 import MongoStore from 'connect-mongo';
 
+/* PASSPORT */
+import bCrypt from 'bcrypt';
+import passport from "passport";
+import {Strategy as LocalStrategy} from 'passport-local';
+
+const usuarios = [];
+
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const URL =
   "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
+
+passport.use('register', new LocalStrategy({ passReqToCallback: true }, (req, username, password, done) => {
+
+  const { direccion } = req.body
+
+  const usuario = usuarios.find(usuario => usuario.username == username)
+  if (usuario) {
+    return done('already registered')
+  }
+
+  const user = {
+    username,
+    password,
+    direccion,
+  }
+  usuarios.push(user)
+
+  return done(null, user)
+}));
+
+passport.use('login', new LocalStrategy((username, password, done) => {
+
+  const user = usuarios.find(usuario => usuario.username == username)
+
+  if (!user) {
+    return done(null, false)
+  }
+
+  if (user.password != password) {
+    return done(null, false)
+  }
+
+  user.contador = 0
+
+  return done(null, user);
+}));
+
+passport.serializeUser(function (user, done) {
+  done(null, user.username);
+});
+
+passport.deserializeUser(function (username, done) {
+  const usuario = usuarios.find(usuario => usuario.username == username)
+  done(null, usuario);
+});
 
 const app = express();
 const httpServer = new HttpServer(app);
@@ -40,23 +93,18 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 10 /* TIEMPO DE SESION: 10 MINUTOS */
+    maxAge: 1000 * 60 * 10, /* TIEMPO DE SESION: 10 MINUTOS */
   }
 }))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.set("view engine", "ejs");
 
 app.use("/api", routerApi);
 
 app.use("/", express.static("public"));
-
-const auth = (req, res, next) => {
-  if (req.session && req.session.user === 'nacho' && req.session.admin) {
-    return next();
-  } else {
-    res.redirect("/")
-  }
-}
 
 io.on("connection", async (socket) => {
   console.log("Nuevo cliente conectado!");
@@ -76,16 +124,41 @@ io.on("connection", async (socket) => {
   });
 });
 
-app.get("/", async (req, res) => {
-  res.render("pages/login");
+function isAuth(req, res, next) {
+  if (req.isAuthenticated()) {
+    next()
+  } else {
+    res.redirect('/login')
+  }
+}
+
+app.get("/", isAuth, async (req, res) => {
+  res.redirect('/home')
 });
 
-app.get("/sign-up", async (req, res) => {
-  const data = await findProducts();
+// LOGIN
+app.get('/login', (req, res) => {
+  res.render('pages/login');
+})
+
+app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/home' }))
+
+app.get('/faillogin', (req, res) => {
+  res.render('pages/login-error', {});
+})
+
+
+app.get('/register', (req, res) => {
   res.render("pages/register");
-});
+})
 
-app.get("/home", auth, async (req, res) => {
+app.post('/register', passport.authenticate('register', { failureRedirect: '/failregister', successRedirect: '/' }))
+
+app.get('/failregister', (req, res) => {
+  res.render('pages/register-error', {});
+})
+
+app.get("/home", isAuth, async (req, res) => {
   const data = await findProducts();
   res.render("pages/products", {
     products: data,
@@ -111,24 +184,10 @@ app.get("/vista", async (req, res) => {
   });
 });
 
-app.get("/preLogout", auth, async (req, res) => {
-  res.render("pages/preLogout", {
-    user: req.session.user
-  });
+app.get("/preLogout", async (req, res) => {
+    req.logout();
+    res.redirect('/')
 });
-
-app.get('/login', (req, res) => {
-  console.log(req.query)
-  if (!req.query.username || !req.query.password) {
-    res.send('login failed: username & password are required')
-  } else if (req.query.username === 'nacho' || req.query.password === "123456") {
-    req.session.user = "nacho";
-    req.session.admin = true;
-    res.redirect("/home")
-  } else {
-    res.send('login failed: wrong username or password')
-  }
-})
 
 app.get('/logout', (req, res) => {
   req.session.destroy(err => {

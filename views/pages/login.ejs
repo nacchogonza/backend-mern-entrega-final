@@ -3,18 +3,19 @@
 
 <div style="padding: 20px;">
   <!-- <form action="/api/productos" method="post"> -->
-  <form onsubmit="return loginUser(this)">
+  <form class="form" action="/login" method="post" role="form" autocomplete="off">
     <div class="form-group">
-      <label for="userLogin" class="font-italic">Usuario</label>
-      <input type="text" class="form-control" name="userLogin" id="userLogin" placeholder="Usuario">
+      <label for="username" class="font-italic">Usuario</label>
+      <input type="text" class="form-control" name="username" id="username" placeholder="Usuario">
     </div>
     <div class="form-group">
-      <label for="passwordLogin">Contraseña</label>
-      <input type="password" class="form-control" name="passwordLogin" id="passwordLogin" placeholder="Password">
+      <label for="password">Contraseña</label>
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password">
     </div>
-    <input type="hidden" name="form" value="1" />
-    <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+    <button type="submit" class="btn btn-primary">INICIAR SESION</button>
   </form>
+  <br>
+  <button onclick="location.href = '/register'" class="btn btn-primary">REGISTRAR USUARIO</button>
 </div>
 
 <%- include('../partials/bottom') %>

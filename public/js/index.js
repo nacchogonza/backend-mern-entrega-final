@@ -98,7 +98,16 @@ function addMessage(e) {
 function loginUser(e) {
   const user = document.getElementById('userLogin').value
   const password = document.getElementById('passwordLogin').value
-  window.location.assign(`/login?username=${user}&password=${password}`)
+  fetch('/login', {
+    method: 'POST',
+    body: {
+      username: user,
+      password
+    },
+    username: user,
+    password
+ })
+  // window.location.assign(`/login?username=${user}&password=${password}`)
   return false 
 }
 
