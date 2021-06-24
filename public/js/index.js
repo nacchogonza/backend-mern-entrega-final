@@ -112,7 +112,7 @@ function loginUser(e) {
 }
 
 function logoutUser(e) {
-  window.location.assign(`/preLogout`)
+  window.location.assign(`/logout`)
   return false 
 }
 

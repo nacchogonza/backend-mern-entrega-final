@@ -191,16 +191,12 @@ app.get("/vista", async (req, res) => {
   });
 });
 
-app.get("/preLogout", async (req, res) => {
+app.get("/logout", async (req, res) => {
     req.logout();
-    res.redirect('/')
+    req.session.destroy(err => {
+      res.redirect("/")
+    });
 });
-
-app.get('/logout', (req, res) => {
-  req.session.destroy(err => {
-    res.redirect("/")
-  });
-})
 
 const PORT = 8080;
 
