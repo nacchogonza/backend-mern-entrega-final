@@ -23,6 +23,7 @@ import MongoStore from 'connect-mongo';
 import bCrypt from 'bcrypt';
 import passport from "passport";
 import {Strategy as LocalStrategy} from 'passport-local';
+import {Strategy as FacebookStrategy} from 'passport-facebook';
 
 //const usuarios = [];
 
@@ -51,33 +52,25 @@ passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (r
   return done(null, user)
 }));
 
-passport.use('login', new LocalStrategy(async (username, password, done) => {
-
-  const usuarios = await findUsuarios();
-
-  const user = usuarios.find(usuario => usuario.username == username)
-
-  if (!user) {
-    return done(null, false)
-  }
-
-  if (user.password != password) {
-    return done(null, false)
-  }
-
-  user.contador = 0
-
-  return done(null, user);
+passport.use('login', new FacebookStrategy({
+  clientID: '338084257980781',
+  clientSecret: '4fadfe8cb02f106f14977498ecca14eb',
+  callbackURL: 'http://localhost:8080/auth/facebook/callback',
+  profileFields: ['id', 'displayName', 'photos', 'emails'],
+  scope: ['email']
+}, (accessToken, refreshToken, profile, done) => {
+  console.log('User Profile: ', profile)
+  return done(null, profile);
 }));
 
 passport.serializeUser(function (user, done) {
-  done(null, user.username);
+  done(null, user);
 });
 
-passport.deserializeUser(async function (username, done) {
-  const usuarios = await findUsuarios();
-  const usuario = usuarios.find(usuario => usuario.username == username)
-  done(null, usuario);
+passport.deserializeUser(async function (obj, done) {
+  // const usuarios = await findUsuarios();
+  // const usuario = usuarios.find(usuario => usuario.username == username)
+  done(null, obj);
 });
 
 const app = express();
@@ -145,10 +138,17 @@ app.get("/", isAuth, async (req, res) => {
 
 // LOGIN
 app.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/loginFacebook');
 })
 
-app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/home' }))
+app.get('/auth/facebook', passport.authenticate('login'));
+
+app.get('/auth/facebook/callback', passport.authenticate('login', {
+    successRedirect: '/home',
+    failureRedirect: '/faillogin'
+}));
+
+// app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/home' }))
 
 app.get('/faillogin', (req, res) => {
   res.render('pages/login-error', {});
@@ -165,11 +165,24 @@ app.get('/failregister', (req, res) => {
   res.render('pages/register-error', {});
 })
 
+/* FACEBOOK LOGIN */
+
+app.get('/auth/facebook', passport.authenticate('facebook'));
+
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    successRedirect: '/',
+    failureRedirect: '/faillogin'
+}));
+
+app.get('/faillogin', (req, res) => {
+    res.render('login-error', {});
+})
+
 app.get("/home", isAuth, async (req, res) => {
   const data = await findProducts();
   res.render("pages/products", {
     products: data,
-    user: req.session.passport.user
+    user: req.session.passport.user.displayName
   });
 });
 
