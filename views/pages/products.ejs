@@ -3,9 +3,12 @@
 
 <div style="padding: 20px;">
   <div class="text-center">
-    <span>
-      Bienvenidx <%= user %>!
-    </span>
+    <p>Bienvenidx <%= user.displayName %></p>
+    <p>Email: <%= user.emails[0].value %></p>
+    <img src="<%= user.photos[0].value %>" />
+    <br><br>
+  </div>
+  <div class="text-center">
     <button type="submit" onclick="return logoutUser(this)" class="btn btn-primary">Cerrar Sesión</button>
   </div>
 

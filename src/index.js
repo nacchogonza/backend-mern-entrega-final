@@ -182,7 +182,7 @@ app.get("/home", isAuth, async (req, res) => {
   const data = await findProducts();
   res.render("pages/products", {
     products: data,
-    user: req.session.passport.user.displayName
+    user: req.session.passport.user
   });
 });
 
