@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 import { routerApi } from "./RouterApi.js";
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
@@ -20,9 +19,7 @@ import session from "express-session";
 import MongoStore from 'connect-mongo';
 
 /* PASSPORT */
-import bCrypt from 'bcrypt';
 import passport from "passport";
-import {Strategy as LocalStrategy} from 'passport-local';
 import {Strategy as FacebookStrategy} from 'passport-facebook';
 
 //const usuarios = [];
@@ -30,27 +27,6 @@ import {Strategy as FacebookStrategy} from 'passport-facebook';
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const URL =
   "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
-
-passport.use('register', new LocalStrategy({ passReqToCallback: true }, async (req, username, password, done) => {
-
-  const { direccion } = req.body
-
-  const usuarios = await findUsuarios();
-
-  const usuario = usuarios.find(usuario => usuario.username == username)
-  if (usuario) {
-    return done('already registered')
-  }
-
-  const user = {
-    username,
-    password,
-    direccion,
-  }
-  await insertUsuario(user)
-
-  return done(null, user)
-}));
 
 passport.use('login', new FacebookStrategy({
   clientID: '338084257980781',
@@ -68,8 +44,6 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(async function (obj, done) {
-  // const usuarios = await findUsuarios();
-  // const usuario = usuarios.find(usuario => usuario.username == username)
   done(null, obj);
 });
 
@@ -141,6 +115,8 @@ app.get('/login', (req, res) => {
   res.render('pages/loginFacebook');
 })
 
+/* FACEBOOK LOGIN */
+
 app.get('/auth/facebook', passport.authenticate('login'));
 
 app.get('/auth/facebook/callback', passport.authenticate('login', {
@@ -152,30 +128,6 @@ app.get('/auth/facebook/callback', passport.authenticate('login', {
 
 app.get('/faillogin', (req, res) => {
   res.render('pages/login-error', {});
-})
-
-
-app.get('/register', (req, res) => {
-  res.render("pages/register");
-})
-
-app.post('/register', passport.authenticate('register', { failureRedirect: '/failregister', successRedirect: '/' }))
-
-app.get('/failregister', (req, res) => {
-  res.render('pages/register-error', {});
-})
-
-/* FACEBOOK LOGIN */
-
-app.get('/auth/facebook', passport.authenticate('facebook'));
-
-app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-    successRedirect: '/',
-    failureRedirect: '/faillogin'
-}));
-
-app.get('/faillogin', (req, res) => {
-    res.render('login-error', {});
 })
 
 app.get("/home", isAuth, async (req, res) => {
