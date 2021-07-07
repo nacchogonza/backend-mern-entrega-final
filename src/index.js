@@ -1,4 +1,6 @@
 import express from "express";
+import cluster from "cluster";
+import os from "os";
 import { routerApi } from "./RouterApi.js";
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
@@ -21,6 +23,7 @@ import passport from "passport";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { fork } from "child_process";
+import { argv } from "process";
 
 //const usuarios = [];
 
@@ -181,7 +184,7 @@ app.get("/randoms", (req, res) => {
 
   randoms_child.send(["start", cant]);
   randoms_child.on("message", (randoms) => {
-    res.end('Ok: '+ randoms);
+    res.end("Ok: " + randoms);
   });
 });
 
@@ -210,12 +213,50 @@ app.get("/logout", async (req, res) => {
   });
 });
 
-const PORT = 8080;
+const PORT = parseInt(process.argv[2]) || 8080;
+const MODE = process.argv[3] || "FORK";
 
-const server = httpServer.listen(PORT, () => {
-  console.log(`servidor inicializado en ${server.address().port}`);
-});
+let server;
 
-server.on("error", (error) =>
-  console.log(`error en el servidor: ${error.message}`)
-);
+if (MODE === "CLUSTER") {
+  // CLUSTER
+  if (cluster.isMaster) {
+    const numCPUs = os.cpus().length;
+
+    console.log(numCPUs);
+    console.log(`PID MASTER ${process.pid}`);
+
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork();
+    }
+
+    cluster.on("exit", (worker) => {
+      console.log(
+        "Worker",
+        worker.process.pid,
+        "died",
+        new Date().toLocaleString()
+      );
+      cluster.fork();
+    });
+  } else {
+  /* --------------------------------------------------------------------------- */
+  /* WORKERS */
+    const PORT = parseInt(process.argv[2]) || 8080;
+
+    app.listen(PORT, (err) => {
+      if (!err)
+        console.log(
+          `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
+        );
+    });
+  }
+} else {
+  server = httpServer.listen(PORT, () => {
+    console.log(`servidor inicializado en ${server.address().port}`);
+  });
+
+  server.on("error", (error) =>
+    console.log(`error en el servidor: ${error.message}`)
+  );
+}
