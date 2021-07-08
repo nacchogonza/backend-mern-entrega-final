@@ -177,7 +177,7 @@ app.get("/vista", async (req, res) => {
   });
 });
 
-const randoms_child = fork("./src/randoms.js");
+/* const randoms_child = fork("./src/randoms.js");
 
 app.get("/randoms", (req, res) => {
   const cant = req.query.cant;
@@ -186,7 +186,7 @@ app.get("/randoms", (req, res) => {
   randoms_child.on("message", (randoms) => {
     res.end("Ok: " + randoms);
   });
-});
+}); */
 
 /* Process Info Route */
 app.get("/info", (req, res) => {
@@ -198,6 +198,7 @@ app.get("/info", (req, res) => {
     ID del proceso: ${process.pid}<br>
     Directorio de Trabajo: ${process.cwd()}<br>
     Directorio de Ejecucion: ${process.argv[0]}<br>
+    Cantidad de procesadores en el : ${os.cpus().length}<br>
   `);
 });
 
