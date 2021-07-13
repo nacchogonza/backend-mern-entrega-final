@@ -96,7 +96,7 @@ app.set("view engine", "ejs");
 
 app.use("/api", routerApi);
 
-app.use("/", express.static("public"));
+// app.use("/", express.static("public"));
 
 io.on("connection", async (socket) => {
   console.log("Nuevo cliente conectado!");
@@ -177,7 +177,7 @@ app.get("/vista", async (req, res) => {
   });
 });
 
-/* const randoms_child = fork("./src/randoms.js");
+const randoms_child = fork("./src/randoms.js");
 
 app.get("/randoms", (req, res) => {
   const cant = req.query.cant;
@@ -186,7 +186,7 @@ app.get("/randoms", (req, res) => {
   randoms_child.on("message", (randoms) => {
     res.end("Ok: " + randoms);
   });
-}); */
+});
 
 /* Process Info Route */
 app.get("/info", (req, res) => {
