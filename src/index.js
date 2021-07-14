@@ -25,7 +25,35 @@ import { Strategy as FacebookStrategy } from "passport-facebook";
 import { fork } from "child_process";
 import { argv } from "process";
 
-//const usuarios = [];
+
+
+const MODE = process.argv[5] || "FORK";
+
+let server;
+
+const numCPUs = os.cpus().length;
+const PORT = parseInt(process.argv[2]) || parseInt(process.argv[4]) || 8080;
+
+  // CLUSTER
+  if (MODE == "CLUSTER" && cluster.isMaster) {
+    console.log(numCPUs);
+    console.log(`PID MASTER ${process.pid}`);
+
+    for (let i = 0; i < numCPUs; i++) {
+      cluster.fork();
+    }
+
+    cluster.on("exit", (worker) => {
+      console.log(
+        "Worker",
+        worker.process.pid,
+        "died",
+        new Date().toLocaleString()
+      );
+      cluster.fork();
+    });
+  } else {
+    //const usuarios = [];
 
 const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
 const URL =
@@ -194,7 +222,6 @@ app.get("/info", (req, res) => {
     Argumentos de entrada: ${process.argv}<br>
     Plataforma: ${process.platform}<br>
     Version de Node: ${process.version}<br>
-    Uso de Memoria del Proceso: ${process.memoryUsage.rss()} bytes<br>
     ID del proceso: ${process.pid}<br>
     Directorio de Trabajo: ${process.cwd()}<br>
     Directorio de Ejecucion: ${process.argv[0]}<br>
@@ -214,50 +241,13 @@ app.get("/logout", async (req, res) => {
   });
 });
 
-const PORT = parseInt(process.argv[2]) || 8080;
-const MODE = process.argv[3] || "FORK";
+console.log(PORT)
+server = httpServer.listen(PORT, () => {
+  console.log(`servidor inicializado en ${server.address().port}`);
+});
 
-let server;
-
-if (MODE === "CLUSTER") {
-  // CLUSTER
-  if (cluster.isMaster) {
-    const numCPUs = os.cpus().length;
-
-    console.log(numCPUs);
-    console.log(`PID MASTER ${process.pid}`);
-
-    for (let i = 0; i < numCPUs; i++) {
-      cluster.fork();
-    }
-
-    cluster.on("exit", (worker) => {
-      console.log(
-        "Worker",
-        worker.process.pid,
-        "died",
-        new Date().toLocaleString()
-      );
-      cluster.fork();
-    });
-  } else {
-  /* --------------------------------------------------------------------------- */
-  /* WORKERS */
-    const PORT = parseInt(process.argv[2]) || 8080;
-
-    app.listen(PORT, (err) => {
-      if (!err)
-        console.log(
-          `Servidor express escuchando en el puerto ${PORT} - PID WORKER ${process.pid}`
-        );
-    });
+server.on("error", (error) =>
+  console.log(`error en el servidor: ${error.message}`)
+);
   }
-} else {
-  server = httpServer.listen(PORT, () => {
-    console.log(`servidor inicializado en ${server.address().port}`);
-  });
 
-  server.on("error", (error) =>
-    console.log(`error en el servidor: ${error.message}`)
-  );
-}
