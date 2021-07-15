@@ -12,6 +12,8 @@ import {
   insertProduct,
 } from "../db/mongoDB.js";
 import faker from "faker";
+import compression from "compression";
+import {logger} from "./logger.js";
 
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -23,9 +25,6 @@ import passport from "passport";
 import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { fork } from "child_process";
-import { argv } from "process";
-
-
 
 const MODE = process.argv[5] || "FORK";
 
@@ -36,8 +35,8 @@ const PORT = parseInt(process.argv[2]) || parseInt(process.argv[4]) || 8080;
 
   // CLUSTER
   if (MODE == "CLUSTER" && cluster.isMaster) {
-    console.log(numCPUs);
-    console.log(`PID MASTER ${process.pid}`);
+    logger.log('warn', `Numero de CPUs: ${numCPUs}`);
+    logger.log('warn', `PID MASTER ${process.pid}`);
 
     for (let i = 0; i < numCPUs; i++) {
       cluster.fork();
@@ -73,7 +72,7 @@ passport.use(
       scope: ["email"],
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log("User Profile: ", profile);
+      logger.log('info', `User Profile: ${profile}`);
       return done(null, profile);
     }
   )
@@ -92,11 +91,12 @@ const httpServer = new HttpServer(app);
 const io = new IOServer(httpServer);
 
 process.on("exit", (code) => {
-  console.log(`Servidor cerrado con código: ${code}`);
+  logger.log('warn', `Servidor cerrado con código: ${code}`);
 });
 
 /* CONEXION A DB MONGO */
-connectDB();
+  connectDB();
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -127,7 +127,7 @@ app.use("/api", routerApi);
 // app.use("/", express.static("public"));
 
 io.on("connection", async (socket) => {
-  console.log("Nuevo cliente conectado!");
+  logger.log('info', "Nuevo cliente conectado!");
 
   socket.emit("productos", await findProducts());
 
@@ -229,6 +229,18 @@ app.get("/info", (req, res) => {
   `);
 });
 
+app.get("/infozip", compression(), (req, res) => {
+  res.send(`
+    Argumentos de entrada: ${process.argv}<br>
+    Plataforma: ${process.platform}<br>
+    Version de Node: ${process.version}<br>
+    ID del proceso: ${process.pid}<br>
+    Directorio de Trabajo: ${process.cwd()}<br>
+    Directorio de Ejecucion: ${process.argv[0]}<br>
+    Cantidad de procesadores en el : ${os.cpus().length}<br>
+  `);
+});
+
 /* EXIT Test Route */
 app.get("/exit", (req, res) => {
   process.exit();
@@ -241,13 +253,12 @@ app.get("/logout", async (req, res) => {
   });
 });
 
-console.log(PORT)
 server = httpServer.listen(PORT, () => {
-  console.log(`servidor inicializado en ${server.address().port}`);
+  logger.log('info', `servidor inicializado en ${server.address().port}`);
 });
 
 server.on("error", (error) =>
-  console.log(`error en el servidor: ${error.message}`)
+  logger.log('error', `error en el servidor: ${error.message}`)
 );
   }
 

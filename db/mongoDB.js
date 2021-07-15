@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import normalizr from 'normalizr';
+import {logger} from '../src/logger.js'
 const {schema} = normalizr
 const normalize = normalizr.normalize;
 import util from 'util'
@@ -114,9 +115,9 @@ export const connectDB = () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Base de datos conectada!");
+    logger.log('info', "Base de datos conectada!");
   } catch (error) {
-    console.log("Error al conectar a DB: ", error);
+    logger.log('error', `Error al conectar a la base de datos: ${error}`);
   }
 };
 
@@ -133,7 +134,7 @@ export const findMessages = async () => {
 
     return normalizedData;
   } catch (error) {
-    console.log("Error al obtener mensajes: ", error);
+    logger.log('error', `Error al obtener mensajes: ${error}`);
   }
 };
 
@@ -152,7 +153,7 @@ export const insertMessage = async (newMessage) => {
       date: newMessage.date,
     });
   } catch (error) {
-    console.log("Error al insertar mensaje: ", error);
+    logger.log('error', `Error al insertar mensaje: ${error}`);
   }
 };
 
@@ -163,7 +164,7 @@ export const findProducts = async () => {
     const products = await DaoProductos.find({});
     return products;
   } catch (error) {
-    console.log("Error al obtener productos: ", error);
+    logger.log('error', `Error al obtener productos: ${error}`);
   }
 };
 export const findProduct = async (id) => {
@@ -171,7 +172,7 @@ export const findProduct = async (id) => {
     const product = await DaoProductos.findOne({ _id: id });
     return product;
   } catch (error) {
-    console.log("Error al obtener productos: ", error);
+    logger.log('error', `Error al obtener producto: ${error}`);
   }
 };
 
@@ -193,7 +194,7 @@ export const putProduct = async (updateProduct, id) => {
     }
     return null;
   } catch (error) {
-    console.log("Error al obtener productos: ", error);
+    logger.log('error', `Error al modificar producto: ${error}`);
   }
 };
 
@@ -202,7 +203,7 @@ export const removeProduct = async (id) => {
     const removeStatus = await DaoProductos.findOneAndRemove({ _id: id });
     return removeStatus;
   } catch (error) {
-    console.log("Error al obtener productos: ", error);
+    logger.log('error', `Error al borrar producto: ${error}`);
   }
 };
 
@@ -214,7 +215,7 @@ export const insertProduct = async (newProduct) => {
       thumbnail: newProduct.thumbnail,
     });
   } catch (error) {
-    console.log("Error al insertar mensaje: ", error);
+    logger.log('error', `Error al insertar mensaje: ${error}`);
   }
 };
 
@@ -224,8 +225,8 @@ export const findUsuarios = async () => {
   try {
     const users = await DaoUsuarios.find({});
     return users;
-  } catch (error) {
-    console.log("Error al obtener usuarios: ", error);
+  } catch (error) {   
+    logger.log('error', `Error al obtener usuarios: ${error}`);
   }
 };
 
@@ -237,6 +238,6 @@ export const insertUsuario = async (newUser) => {
       direccion: newUser.direccion,
     });
   } catch (error) {
-    console.log("Error al insertar usuario: ", error);
+    logger.log('error', `Error al insertar usuario: ${error}`);
   }
 };
