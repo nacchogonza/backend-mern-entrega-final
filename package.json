@@ -6,11 +6,15 @@
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",
-    "prod": "forever start ./src/index.js"
+    "prod": "forever start ./src/index.js",
+    "autocannon": "node ./src/benchmark.js",
+    "test": "0x ./src/index.js"
   },
   "author": "Ignacio Martin Gonzalez",
   "license": "ISC",
   "dependencies": {
+    "artillery": "^1.7.6",
+    "autocannon": "^7.4.0",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

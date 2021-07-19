@@ -1,0 +1,456 @@
+Statistical profiling result from process-no-console.log, (1969 ticks, 521 unaccounted, 0 excluded).
+
+ [Shared libraries]:
+   ticks  total  nonlib   name
+   1425   72.4%          /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      1    0.1%          /usr/lib/x86_64-linux-gnu/libc-2.31.so
+
+ [JavaScript]:
+   ticks  total  nonlib   name
+      4    0.2%    0.7%  LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      3    0.2%    0.6%  LazyCompile: *deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      2    0.1%    0.4%  LazyCompile: *nextTick node:internal/process/task_queues:102:18
+      1    0.1%    0.2%  RegExp: ; *([!#$%&'*+.^_`|~0-9A-Za-z-]+) *= *("(?:[\u000b\u0020\u0021\u0023-\u005b\u005d-\u007e\u0080-\u00ff]|\\[\u000b\u0020-\u00ff])*"|[!#$%&'*+.^_`|~0-9A-Za-z-]+) *
+
+ [C++]:
+   ticks  total  nonlib   name
+      3    0.2%    0.6%  __write
+      2    0.1%    0.4%  std::basic_ostream<char, std::char_traits<char> >& std::__ostream_insert<char, std::char_traits<char> >(std::basic_ostream<char, std::char_traits<char> >&, char const*, long)
+      2    0.1%    0.4%  fwrite
+      1    0.1%    0.2%  readlink
+      1    0.1%    0.2%  pthread_sigmask
+      1    0.1%    0.2%  __GI___pthread_mutex_unlock
+      1    0.1%    0.2%  __GI___pthread_mutex_lock
+      1    0.1%    0.2%  _IO_file_xsputn
+
+ [Summary]:
+   ticks  total  nonlib   name
+     10    0.5%    1.8%  JavaScript
+     12    0.6%    2.2%  C++
+    144    7.3%   26.5%  GC
+   1426   72.4%          Shared libraries
+    521   26.5%          Unaccounted
+
+ [C++ entry points]:
+   ticks    cpp   total   name
+      1  100.0%    0.1%  TOTAL
+
+ [Bottom up (heavy) profile]:
+  Note: percentage shows a share of a particular caller in the total
+  amount of its parent calls.
+  Callers occupying less than 1.0% are not shown.
+
+   ticks parent  name
+   1425   72.4%  /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+    676   47.4%    /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+     76   11.2%      LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+     76  100.0%        LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+     76  100.0%          LazyCompile: ~next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/route.js:114:16
+     76  100.0%            LazyCompile: ~dispatch /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/route.js:98:45
+     32    4.7%      LazyCompile: ~writevGeneric node:internal/stream_base_commons:122:23
+     32  100.0%        LazyCompile: ~Socket._writev node:net:779:36
+     32  100.0%          LazyCompile: ~doWrite node:internal/streams/writable:404:17
+     32  100.0%            LazyCompile: ~clearBuffer node:internal/streams/writable:534:21
+     30    4.4%      LazyCompile: ~deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+     22   73.3%        LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+     22  100.0%          LazyCompile: ~BSON.deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:134:38
+     19   86.4%            LazyCompile: ~parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/msg.js:172:8
+      2    9.1%            LazyCompile: ~parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/msg.js:172:8
+      1    4.5%            LazyCompile: ~Response.parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/commands.js:438:36
+      8   26.7%        LazyCompile: ~deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      7   87.5%          LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+      7  100.0%            LazyCompile: ~BSON.deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:134:38
+      1   12.5%          LazyCompile: ~deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      1  100.0%            LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+     27    4.0%      LazyCompile: ~pbkdf2Sync node:internal/crypto/pbkdf2:65:20
+     19   70.4%        LazyCompile: ~HI /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:285:12
+     19  100.0%          LazyCompile: ~continueScramConversation /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:116:35
+     19  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:106:50
+      8   29.6%        LazyCompile: ~HI /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/auth/scram.js:285:12
+      8  100.0%          LazyCompile: ~continueScramConversation /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/auth/scram.js:116:35
+      8  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/auth/scram.js:106:50
+     19    2.8%      LazyCompile: ~Hash node:internal/crypto/hash:58:14
+     19  100.0%        LazyCompile: ~createHash node:crypto:129:20
+     10   52.6%          LazyCompile: ~hash /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:596:14
+      6   60.0%            LazyCompile: ~isModified /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:425:24
+      4   40.0%            LazyCompile: ~generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:363:22
+      9   47.4%          LazyCompile: ~entitytag /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/etag/index.js:39:20
+      9  100.0%            LazyCompile: ~etag /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/etag/index.js:70:15
+     18    2.7%      LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+     18  100.0%        LazyCompile: ~nativeModuleRequire node:internal/bootstrap/loaders:303:29
+      3   16.7%          Eval: ~<anonymous> node:internal/child_process:1:1
+      3  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      2   11.1%          LazyCompile: ~initializeCJSLoader node:internal/bootstrap/pre_execution:413:29
+      2  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:21:36
+      2   11.1%          Eval: ~<anonymous> node:internal/modules/esm/loader:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      2   11.1%          Eval: ~<anonymous> node:internal/modules/cjs/loader:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      2   11.1%          Eval: ~<anonymous> node:internal/fs/promises:1:1
+      2  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      1    5.6%          LazyCompile: ~setupChildProcessIpcChannel node:internal/bootstrap/pre_execution:329:37
+      1  100.0%            LazyCompile: ~prepareMainThreadExecution node:internal/bootstrap/pre_execution:21:36
+      1    5.6%          Eval: ~<anonymous> node:net:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      1    5.6%          Eval: ~<anonymous> node:internal/process/esm_loader:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      1    5.6%          Eval: ~<anonymous> node:internal/modules/package_json_reader:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      1    5.6%          Eval: ~<anonymous> node:internal/modules/esm/get_source:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+      1    5.6%          Eval: ~<anonymous> node:internal/main/run_main_module:1:1
+      1    5.6%          Eval: ~<anonymous> node:child_process:1:1
+      1  100.0%            LazyCompile: ~compileForInternalLoader node:internal/bootstrap/loaders:270:27
+     17    2.5%      LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+     17  100.0%        LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+     17  100.0%          LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+     17  100.0%            LazyCompile: ~next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/route.js:114:16
+     16    2.4%      LazyCompile: ~randomFillSync node:internal/crypto/random:104:24
+     16  100.0%        LazyCompile: ~randomBytes node:internal/crypto/random:84:21
+     16  100.0%          LazyCompile: ~randomBytesSync /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/random-bytes/index.js:72:25
+     16  100.0%            LazyCompile: ~uidSync /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/uid-safe/index.js:75:18
+     16    2.4%      LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+     11   68.8%        LazyCompile: ~strategy.pass /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/passport/lib/middleware/authenticate.js:342:31
+     11  100.0%          LazyCompile: ~SessionStrategy.authenticate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/passport/lib/strategies/session.js:44:50
+     11  100.0%            LazyCompile: ~attempt /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/passport/lib/middleware/authenticate.js:177:22
+      3   18.8%        LazyCompile: ~jsonParser /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/body-parser/lib/types/json.js:98:30
+      3  100.0%          LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      3  100.0%            LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      1    6.3%        LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      1  100.0%          LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%            LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      1    6.3%        LazyCompile: ~initialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/passport/lib/middleware/initialize.js:44:29
+      1  100.0%          LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      1  100.0%            LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+     16    2.4%      LazyCompile: *deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      8   50.0%        LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+      8  100.0%          LazyCompile: ~BSON.deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:134:38
+      7   87.5%            LazyCompile: ~parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/msg.js:172:8
+      1   12.5%            LazyCompile: ~parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/msg.js:172:8
+      8   50.0%        LazyCompile: *deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      5   62.5%          LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+      5  100.0%            LazyCompile: ~BSON.deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:134:38
+      3   37.5%          LazyCompile: *deserializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:43:33
+      3  100.0%            LazyCompile: ~deserialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/deserializer.js:19:27
+     15    2.2%      /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      2   13.3%        LazyCompile: ~isIPv6 node:internal/net:35:16
+      2  100.0%          LazyCompile: ~isIP node:internal/net:39:14
+      1   50.0%            LazyCompile: ~parseSslOptions /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:224:25
+      1   50.0%            LazyCompile: ~lookupAndConnect node:net:973:26
+      2   13.3%        LazyCompile: ~header /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:754:29
+      2  100.0%          LazyCompile: ~contentType /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:594:32
+      2  100.0%            LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      2   13.3%        LazyCompile: ~checkInvalidHeaderChar node:_http_common:233:32
+      2  100.0%          LazyCompile: ~<anonymous> node:_http_outgoing:561:45
+      2  100.0%            LazyCompile: ~setHeader node:_http_outgoing:571:57
+      2   13.3%        LazyCompile: ~ServerDescription /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/server_description.js:59:14
+      2  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/server.js:150:51
+      2  100.0%            LazyCompile: *emit node:events:327:44
+      1    6.7%        LazyCompile: ~parse /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/content-type/index.js:106:16
+      1  100.0%          LazyCompile: ~setCharset /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/utils.js:250:41
+      1  100.0%            LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      1    6.7%        LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection.js:220:33
+      1  100.0%          LazyCompile: *emit node:events:327:44
+      1  100.0%            LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1    6.7%        LazyCompile: ~databaseNamespace /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/shared.js:95:27
+      1  100.0%          LazyCompile: ~_command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:41:18
+      1  100.0%            LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:19:17
+      1    6.7%        LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/server.js:244:10
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:666:78
+      1  100.0%            LazyCompile: ~processWaitQueue /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:1008:26
+      1    6.7%        LazyCompile: ~_command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/wireprotocol/command.js:41:18
+      1  100.0%          LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/wireprotocol/command.js:19:17
+      1  100.0%            LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:174:10
+      1    6.7%        LazyCompile: ~URL node:internal/url:605:14
+      1  100.0%          LazyCompile: ~pathToFileURL node:internal/url:1410:23
+      1  100.0%            LazyCompile: ~<anonymous> node:internal/modules/run_main:47:39
+      1    6.7%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:87:41
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:31:28
+      1  100.0%            LazyCompile: ~<anonymous> node:internal/crypto/random:98:43
+     14    2.1%      LazyCompile: ~hash /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:596:14
+      8   57.1%        LazyCompile: ~generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:363:22
+      8  100.0%          LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      8  100.0%            LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      6   42.9%        LazyCompile: ~isModified /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:425:24
+      3   50.0%          LazyCompile: ~shouldSetCookie /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:464:29
+      3  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:220:28
+      3   50.0%          LazyCompile: ~shouldSave /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:440:24
+      3  100.0%            LazyCompile: ~end /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:250:27
+     12    1.8%      LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+     12  100.0%        LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      9   75.0%          LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      9  100.0%            LazyCompile: ~cookieParser /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/cookie-parser/index.js:44:32
+      3   25.0%          LazyCompile: ~trim_prefix /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:288:23
+      3  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:275:64
+     11    1.6%      LazyCompile: ~createSecureContext node:_tls_common:160:59
+     11  100.0%        LazyCompile: ~connect node:_tls_wrap:1590:35
+     11  100.0%          LazyCompile: ~makeConnection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:254:24
+     11  100.0%            LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:18:17
+     11    1.6%      LazyCompile: ~TLSSocket.getPeerCertificate node:_tls_wrap:985:50
+     11  100.0%        LazyCompile: ~onConnectSecure node:_tls_wrap:1517:25
+     11  100.0%          LazyCompile: ~TLSSocket._finishInit node:_tls_wrap:919:43
+     11  100.0%            LazyCompile: ~ssl.onhandshakedone node:_tls_wrap:717:27
+     10    1.5%      LazyCompile: ~cookieParser /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/cookie-parser/index.js:44:32
+     10  100.0%        LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      9   90.0%          LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      9  100.0%            LazyCompile: ~urlencodedParser /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/body-parser/lib/types/urlencoded.js:79:36
+      1   10.0%          LazyCompile: ~trim_prefix /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:288:23
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:275:64
+      9    1.3%      LazyCompile: ~store.generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:158:28
+      9  100.0%        LazyCompile: ~generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:363:22
+      9  100.0%          LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      9  100.0%            LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      9    1.3%      LazyCompile: *nextTick node:internal/process/task_queues:102:18
+      3   33.3%        LazyCompile: ~endReadable node:internal/streams/readable:1290:21
+      3  100.0%          LazyCompile: ~Readable.read node:internal/streams/readable:394:35
+      2   66.7%            LazyCompile: ~flow node:internal/streams/readable:1003:14
+      1   33.3%            LazyCompile: ~resume_ node:internal/streams/readable:979:17
+      2   22.2%        LazyCompile: ~writevGeneric node:internal/stream_base_commons:122:23
+      2  100.0%          LazyCompile: ~Socket._writev node:net:779:36
+      2  100.0%            LazyCompile: ~doWrite node:internal/streams/writable:404:17
+      2   22.2%        LazyCompile: *Readable.read node:internal/streams/readable:394:35
+      2  100.0%          LazyCompile: ~flow node:internal/streams/readable:1003:14
+      1   50.0%            LazyCompile: ~resume_ node:internal/streams/readable:979:17
+      1   50.0%            LazyCompile: ~emitReadable_ node:internal/streams/readable:570:23
+      1   11.1%        LazyCompile: ~resume node:internal/streams/readable:972:16
+      1  100.0%          LazyCompile: ~Readable.resume node:internal/streams/readable:958:37
+      1  100.0%            LazyCompile: ~_dump node:_http_incoming:355:49
+      1   11.1%        LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1  100.0%          LazyCompile: ~_write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:38:9
+      1  100.0%            LazyCompile: ~ondata node:internal/streams/readable:748:18
+      8    1.2%      LazyCompile: ~serializeInto /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/serializer.js:674:43
+      4   50.0%        LazyCompile: ~serializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/serializer.js:320:31
+      4  100.0%          LazyCompile: ~serializeInto /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/serializer.js:674:43
+      2   50.0%            LazyCompile: ~serializeObject /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/parser/serializer.js:320:31
+      2   50.0%            LazyCompile: ~serialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:47:46
+      4   50.0%        LazyCompile: ~serialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:47:46
+      3   75.0%          LazyCompile: ~serializeBson /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/msg.js:126:16
+      3  100.0%            LazyCompile: ~makeDocumentSegment /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/msg.js:115:22
+      1   25.0%          LazyCompile: ~Query.toBin /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/commands.js:90:33
+      1  100.0%            LazyCompile: ~writeCommand /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:51:15
+      8    1.2%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/request.js:467:36
+      7   87.5%        /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      7  100.0%          LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      7  100.0%            LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+      1   12.5%        LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      1  100.0%          LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+      1  100.0%            LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      7    1.0%      LazyCompile: ~writeHead node:_http_server:274:19
+      7  100.0%        LazyCompile: ~writeHead /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/on-headers/index.js:28:29
+      7  100.0%          LazyCompile: ~_implicitHeader node:_http_server:269:68
+      7  100.0%            LazyCompile: ~write_ node:_http_outgoing:710:16
+      7    1.0%      LazyCompile: ~update node:internal/crypto/hash:95:40
+      4   57.1%        LazyCompile: ~hash /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:596:14
+      2   50.0%          LazyCompile: ~isModified /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:425:24
+      1   50.0%            LazyCompile: ~shouldSetCookie /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:464:29
+      1   50.0%            LazyCompile: ~shouldSave /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:440:24
+      2   50.0%          LazyCompile: ~generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:363:22
+      2  100.0%            LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      3   42.9%        LazyCompile: ~entitytag /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/etag/index.js:39:20
+      3  100.0%          LazyCompile: ~etag /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/etag/index.js:70:15
+      3  100.0%            LazyCompile: ~generateETag /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/utils.js:275:32
+      7    1.0%      LazyCompile: ~initialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/passport/lib/middleware/initialize.js:44:29
+      7  100.0%        LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      5   71.4%          LazyCompile: *next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      5  100.0%            LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      2   28.6%          LazyCompile: ~trim_prefix /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:288:23
+      2  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:275:64
+     15    1.1%    LazyCompile: ~IncomingMessage node:_http_incoming:53:25
+     15  100.0%      LazyCompile: ~parserOnHeadersComplete node:_http_common:78:33
+
+    521   26.5%  UNKNOWN
+    178   34.2%    LazyCompile: *cpus node:os:105:14
+    178  100.0%      LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+    178  100.0%        LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+    178  100.0%          LazyCompile: ~next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/route.js:114:16
+    178  100.0%            LazyCompile: ~dispatch /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/route.js:98:45
+     60   11.5%    /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      8   13.3%      /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      1   12.5%        LazyCompile: ~unfqdn node:tls:152:16
+      1  100.0%          LazyCompile: ~splitHost node:tls:162:19
+      1  100.0%            LazyCompile: ~checkServerIdentity node:tls:234:59
+      1   12.5%        LazyCompile: ~resolveClusterTime /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/topologies/shared.js:329:28
+      1  100.0%          LazyCompile: ~serverUpdateHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:511:22
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/server.js:150:51
+      1   12.5%        LazyCompile: ~makeConnection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:254:24
+      1  100.0%          LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:18:17
+      1  100.0%            LazyCompile: ~checkServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:177:21
+      1   12.5%        LazyCompile: ~isBad node:tls:187:17
+      1  100.0%          /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      1  100.0%            LazyCompile: ~check node:tls:169:15
+      1   12.5%        LazyCompile: ~header /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:754:29
+      1  100.0%          LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      1  100.0%            LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+      1   12.5%        LazyCompile: ~checkCollectionName /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/utils.js:78:55
+      1  100.0%          LazyCompile: ~Collection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/collection.js:100:20
+      1  100.0%            LazyCompile: ~Db.collection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/db.js:418:35
+      1   12.5%        LazyCompile: ~Topology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:103:14
+      1  100.0%          LazyCompile: ~NativeTopology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/topologies/native_topology.js:9:14
+      1  100.0%            LazyCompile: ~createTopology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/operations/connect.js:486:24
+      1   12.5%        LazyCompile: ~MongoCredentials /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/auth/mongo_credentials.js:44:14
+      1  100.0%          LazyCompile: ~generateCredentials /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/connect.js:653:29
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/connect.js:282:25
+      4    6.7%      LazyCompile: ~store.generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:158:28
+      4  100.0%        LazyCompile: ~generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:363:22
+      4  100.0%          LazyCompile: ~session /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:179:26
+      4  100.0%            LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/layer.js:86:49
+      2    3.3%      LazyCompile: ~continueScramConversation /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:116:35
+      2  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:106:50
+      2  100.0%          LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:224:33
+      2  100.0%            LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      2    3.3%      LazyCompile: ~Db /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/db.js:142:12
+      2  100.0%        LazyCompile: ~MongoClient.db /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/mongo_client.js:329:36
+      2  100.0%          LazyCompile: ~_setClient /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongoose/lib/connection.js:881:20
+      2  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongoose/lib/connection.js:835:20
+      2    3.3%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection_pool.js:345:21
+      2  100.0%        LazyCompile: ~handleOperationResult /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/server.js:520:40
+      2  100.0%          LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection.js:220:33
+      2  100.0%            LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1    1.7%      LazyCompile: ~toString /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/uid-safe/index.js:102:19
+      1  100.0%        LazyCompile: ~uidSync /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/uid-safe/index.js:75:18
+      1  100.0%          LazyCompile: ~generateSessionId /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:518:27
+      1  100.0%            LazyCompile: ~store.generate /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:158:28
+      1    1.7%      LazyCompile: ~setRequestTimeout node:_http_server:767:27
+      1  100.0%        LazyCompile: ~connectionListenerInternal node:_http_server:441:36
+      1  100.0%          LazyCompile: ~connectionListener node:_http_server:435:28
+      1  100.0%            LazyCompile: ~onconnection node:net:1524:22
+      1    1.7%      LazyCompile: ~setAutoRemove /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/build/main/lib/MongoStore.js:138:18
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/build/main/lib/MongoStore.js:127:19
+      1  100.0%          /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      1    1.7%      LazyCompile: ~serverUpdateHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:511:22
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/server.js:150:51
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/monitor.js:258:64
+      1  100.0%            LazyCompile: ~callback /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:71:28
+      1    1.7%      LazyCompile: ~serialize /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bson/lib/bson/bson.js:47:46
+      1  100.0%        LazyCompile: ~Query.toBin /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/commands.js:90:33
+      1  100.0%          LazyCompile: ~writeCommand /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:51:15
+      1  100.0%            LazyCompile: ~write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:301:15
+      1    1.7%      LazyCompile: ~selectServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/topology.js:381:15
+      1  100.0%        LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/topology.js:659:10
+      1  100.0%          LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/topologies/native_topology.js:58:10
+      1  100.0%            LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/topology.js:250:10
+      1    1.7%      LazyCompile: ~processWaitQueue /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection_pool.js:445:26
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection_pool.js:236:22
+      1    1.7%      LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1  100.0%        LazyCompile: ~_write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:38:9
+      1  100.0%          LazyCompile: ~ondata node:internal/streams/readable:748:18
+      1  100.0%            LazyCompile: ~addChunk node:internal/streams/readable:303:18
+      1    1.7%      LazyCompile: ~pbkdf2Sync node:internal/crypto/pbkdf2:65:20
+      1  100.0%        LazyCompile: ~HI /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:285:12
+      1  100.0%          LazyCompile: ~continueScramConversation /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:116:35
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/auth/scram.js:106:50
+      1    1.7%      LazyCompile: ~parseurl /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/parseurl/index.js:35:19
+      1  100.0%        LazyCompile: ~getPathname /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:526:21
+      1  100.0%          LazyCompile: ~next /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:176:16
+      1  100.0%            LazyCompile: ~handle /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/router/index.js:136:31
+      1    1.7%      LazyCompile: ~parserOnHeadersComplete node:_http_common:78:33
+      1    1.7%      LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:224:33
+      1  100.0%        LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1  100.0%          LazyCompile: ~_write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:38:9
+      1  100.0%            LazyCompile: ~ondata node:internal/streams/readable:748:18
+      1    1.7%      LazyCompile: ~makeConnection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:254:24
+      1  100.0%        LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:18:17
+      1  100.0%          LazyCompile: ~checkServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/monitor.js:181:21
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/monitor.js:291:10
+      1    1.7%      LazyCompile: ~makeConnection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:254:24
+      1  100.0%        LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:18:17
+      1  100.0%          LazyCompile: ~checkServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:177:21
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:286:10
+      1    1.7%      LazyCompile: ~insert node:internal/timers:350:16
+      1  100.0%        LazyCompile: ~setUnrefTimeout node:internal/timers:372:25
+      1  100.0%          LazyCompile: ~setStreamTimeout node:internal/stream_base_commons:245:26
+      1  100.0%            LazyCompile: ~makeConnection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:254:24
+      1    1.7%      LazyCompile: ~hash /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:596:14
+      1  100.0%        LazyCompile: ~isModified /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:425:24
+      1  100.0%          LazyCompile: ~shouldSave /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:440:24
+      1  100.0%            LazyCompile: ~end /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:250:27
+      1    1.7%      LazyCompile: ~end node:_http_outgoing:813:45
+      1  100.0%        LazyCompile: ~end /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express-session/index.js:250:27
+      1  100.0%          LazyCompile: ~send /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/express/lib/response.js:107:25
+      1  100.0%            LazyCompile: ~<anonymous> file:///home/nacchogonza/Escritorio/backend-mern-clase-32/src/index.js:219:20
+      1    1.7%      LazyCompile: ~done /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:288:18
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:299:26
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:253:64
+      1  100.0%            LazyCompile: ~callback /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:71:28
+      1    1.7%      LazyCompile: ~createTopology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/operations/connect.js:486:24
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/operations/connect.js:281:25
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/uri_parser.js:120:51
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/uri_parser.js:93:35
+      1    1.7%      LazyCompile: ~createTopology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/connect.js:487:24
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/connect.js:282:25
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/uri_parser.js:120:51
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/uri_parser.js:93:35
+      1    1.7%      LazyCompile: ~connect /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:250:10
+      1  100.0%        LazyCompile: ~createTopology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/operations/connect.js:486:24
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/operations/connect.js:281:25
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/uri_parser.js:120:51
+      1    1.7%      LazyCompile: ~checkServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/monitor.js:181:21
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/monitor.js:291:10
+      1  100.0%          LazyCompile: ~executeAndReschedule /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/utils.js:798:32
+      1  100.0%            LazyCompile: ~makeInterruptableAsyncInterval /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/utils.js:736:40
+      1    1.7%      LazyCompile: ~checkServer /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:177:21
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/monitor.js:286:10
+      1  100.0%          LazyCompile: ~executeAndReschedule /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/utils.js:791:32
+      1  100.0%            LazyCompile: ~listOnTimeout node:internal/timers:505:25
+      1    1.7%      LazyCompile: ~cb /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/topology.js:680:18
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection_pool.js:345:21
+      1  100.0%          LazyCompile: ~handleOperationResult /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/sdam/server.js:520:40
+      1  100.0%            LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:224:33
+      1    1.7%      LazyCompile: ~cache node:internal/http:20:15
+      1  100.0%        LazyCompile: ~utcDate node:internal/http:15:17
+      1  100.0%          LazyCompile: ~_storeHeader node:_http_outgoing:373:22
+      1  100.0%            LazyCompile: ~writeHead node:_http_server:274:19
+      1    1.7%      LazyCompile: ~applySession /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sessions.js:692:22
+      1  100.0%        LazyCompile: ~_command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:41:18
+      1  100.0%          LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:19:17
+      1  100.0%            LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection.js:170:10
+      1    1.7%      LazyCompile: ~_write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:38:9
+      1  100.0%        LazyCompile: ~ondata node:internal/streams/readable:748:18
+      1  100.0%          LazyCompile: ~addChunk node:internal/streams/readable:303:18
+      1  100.0%            LazyCompile: ~readableAddChunk node:internal/streams/readable:235:26
+      1    1.7%      LazyCompile: ~_command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:41:18
+      1  100.0%        LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/wireprotocol/command.js:19:17
+      1  100.0%          LazyCompile: ~command /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection.js:170:10
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:87:41
+      1    1.7%      LazyCompile: ~Socket.end node:net:587:32
+      1  100.0%        LazyCompile: ~socketOnEnd node:_http_server:604:21
+      1  100.0%          LazyCompile: *emit node:events:327:44
+      1  100.0%            LazyCompile: ~endReadableNT node:internal/streams/readable:1300:23
+      1    1.7%      LazyCompile: ~Socket._read node:net:575:34
+      1  100.0%        LazyCompile: ~<anonymous> node:net:580:26
+      1  100.0%          LazyCompile: ~afterConnect node:net:1099:22
+      1    1.7%      LazyCompile: ~ServerDescription /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/server_description.js:59:14
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/topology.js:139:48
+      1  100.0%          /home/nacchogonza/.nvm/versions/node/v15.11.0/bin/node
+      1  100.0%            LazyCompile: ~Topology /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/topology.js:103:14
+      1    1.7%      LazyCompile: ~Readable.removeListener node:internal/streams/readable:901:45
+      1  100.0%        LazyCompile: ~onConnectSecure node:_tls_wrap:1517:25
+      1  100.0%          LazyCompile: ~TLSSocket._finishInit node:_tls_wrap:919:43
+      1  100.0%            LazyCompile: ~ssl.onhandshakedone node:_tls_wrap:717:27
+      1    1.7%      LazyCompile: ~IncomingMessage node:_http_incoming:53:25
+      1  100.0%        LazyCompile: ~parserOnHeadersComplete node:_http_common:78:33
+      1    1.7%      LazyCompile: ~Duplex /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/readable-stream/lib/_stream_duplex.js:64:16
+      1  100.0%        LazyCompile: ~BufferList /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/bl/bl.js:6:21
+      1  100.0%          LazyCompile: ~MessageStream /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:28:14
+      1  100.0%            LazyCompile: ~Connection /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:29:14
+      1    1.7%      LazyCompile: ~BufferList /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/readable-stream/lib/internal/streams/BufferList.js:13:22
+      1  100.0%        LazyCompile: ~ReadableState /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/readable-stream/lib/_stream_readable.js:101:23
+      1  100.0%          LazyCompile: ~Readable /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/readable-stream/lib/_stream_readable.js:178:18
+      1  100.0%            LazyCompile: ~Duplex /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/readable-stream/lib/_stream_duplex.js:64:16
+      1    1.7%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/core/connection/connect.js:99:64
+      1  100.0%        LazyCompile: ~messageHandler /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/connection.js:224:33
+      1  100.0%          LazyCompile: ~processIncomingData /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:103:29
+      1  100.0%            LazyCompile: ~_write /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/mongodb/lib/cmap/message_stream.js:38:9
+      1    1.7%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/execute_operation.js:34:37
+      1  100.0%        LazyCompile: ~executeOperation /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/execute_operation.js:25:26
+      1  100.0%          LazyCompile: ~Collection.createIndex /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/collection.js:1243:44
+      1  100.0%            LazyCompile: ~setAutoRemove /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/build/main/lib/MongoStore.js:138:18
+      1    1.7%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/create_indexes.js:124:39
+      1  100.0%        LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/operations/command_v2.js:95:59
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection_pool.js:345:21
+      1  100.0%            LazyCompile: ~handleOperationResult /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/sdam/server.js:520:40
+      1    1.7%      LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/cmap/connection_pool.js:393:53
+      1  100.0%        LazyCompile: ~callback /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:71:28
+      1  100.0%          LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/connection/connect.js:146:40
+      1  100.0%            LazyCompile: ~<anonymous> /home/nacchogonza/Escritorio/backend-mern-clase-32/node_modules/connect-mongo/node_modules/mongodb/lib/core/auth/scram.js:183:53
+
