@@ -31,7 +31,7 @@ const MODE = process.argv[5] || "FORK";
 let server;
 
 const numCPUs = os.cpus().length;
-const PORT = parseInt(process.argv[2]) || parseInt(process.argv[4]) || 8080;
+const PORT = process.env.PORT || 8080;
 
 // CLUSTER
 if (MODE == "CLUSTER" && cluster.isMaster) {
