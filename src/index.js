@@ -27,21 +27,30 @@ import { Strategy as FacebookStrategy } from "passport-facebook";
 import { fork } from "child_process";
 
 import nodemailer from 'nodemailer';
+import clientTwilio from 'twilio';
+
+const etherealHost = 'smtp.ethereal.email'
+const etherealPort = 587
+const etherealUser = 'telly89@ethereal.email'
+const etherealPass = 'qBA3arDFWw9Z2nTBnQ'
 
 const transporterEthereal = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
-  port: 587,
+  host: etherealHost,
+  port: etherealPort,
   auth: {
-      user: 'telly89@ethereal.email',
-      pass: 'qBA3arDFWw9Z2nTBnQ'
+      user: etherealUser,
+      pass: etherealPass
   }
 });
+
+const gmailUser = 'nachomgonzalez93@gmail.com'
+const gmailPass = 'ouikpvfrztcmqqhy'
 
 const transporterGmail = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-      user: 'nachomgonzalez93@gmail.com',
-      pass: 'ouikpvfrztcmqqhy'
+      user: gmailUser,
+      pass: gmailPass
   }
 });
 
@@ -77,9 +86,6 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   const URL =
     "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
 
-  const FACEBOOK_CLIENT_ID = "155027036736895";
-  const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
-
   const sendEtherealEmail = (mailOptions) => {
     transporterEthereal.sendMail(mailOptions, (err, info) => {
       if (err) {
@@ -99,6 +105,40 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       logger.log('info', info);
     })
   }
+
+  /* TWILIO CONFIG & UTILS */
+  const getWordPosition = (palabra, frase) => {
+    const position = frase.indexOf(palabra);
+    return position;
+  }
+
+  const accountSid = 'AC6a36f7316fe7338f08d867dcdc94b264'
+  const accountToken = '351c5ff7d7bada406d5b4a2fb9f014ad'
+
+  const twilioFrom = '+12027336319'
+  const twilioTo = '+5492945404287'
+
+  const twilioSender = clientTwilio(accountSid, accountToken)
+
+  const sendSms = async (data) => {
+    try {
+      const msg = await twilioSender.messages.create({
+        body: `Mensaje enviado por ${data.nombre}. Texto: ${data.text}`,
+        from: twilioFrom,
+        to: twilioTo
+      })
+    
+      console.log(msg.sid)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  /* TWILIO CONFIG */
+
+  /* PASSPORT FB CONFIG */
+
+  const FACEBOOK_CLIENT_ID = "155027036736895";
+  const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
 
   passport.use(
     "login",
@@ -146,6 +186,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     done(null, obj);
   });
 
+  /* PASSPORT FB CONFIG */
+
   const app = express();
   const httpServer = new HttpServer(app);
   const io = new IOServer(httpServer);
@@ -183,7 +225,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
 
   app.use("/api", routerApi);
 
-  // app.use("/", express.static("public"));
+  app.use("/", express.static("public"));
 
   io.on("connection", async (socket) => {
     logger.log("info", "Nuevo cliente conectado!");
@@ -198,6 +240,9 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     });
 
     socket.on("new-message", async (data) => {
+      if (getWordPosition('administrador', data.text) !== -1) {
+        await sendSms(data);
+      }
       await insertMessage(data);
       socket.emit("messages", await findMessages());
     });
