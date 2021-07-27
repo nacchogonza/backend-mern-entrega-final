@@ -58,8 +58,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   const URL =
     "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
 
-  const FACEBOOK_CLIENT_ID = "338084257980781";
-  const FACEBOOK_CLIENT_SECRET = "4fadfe8cb02f106f14977498ecca14eb";
+  const FACEBOOK_CLIENT_ID = "155027036736895";
+  const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
 
   passport.use(
     "login",

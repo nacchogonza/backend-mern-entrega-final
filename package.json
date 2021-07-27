@@ -1,6 +1,6 @@
 {
   "type": "module",
-  "name": "entregable-22",
+  "name": "entregable-35",
   "version": "1.0.0",
   "description": "Entregable para la clase 20",
   "main": "./src/index.js",
@@ -15,7 +15,6 @@
   "dependencies": {
     "artillery": "^1.7.6",
     "autocannon": "^7.4.0",
-    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.4.1",

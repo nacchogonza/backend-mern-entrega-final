@@ -111,11 +111,6 @@ function loginUser(e) {
   return false 
 }
 
-function logoutUser(e) {
-  window.location.assign(`/logout`)
-  return false 
-}
-
 function signUpUser(e) {
   const user = document.getElementById('userSignIn').value
   const password = document.getElementById('passwordSignIn').value
