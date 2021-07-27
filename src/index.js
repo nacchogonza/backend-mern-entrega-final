@@ -26,6 +26,17 @@ import { Strategy as FacebookStrategy } from "passport-facebook";
 
 import { fork } from "child_process";
 
+import nodemailer from 'nodemailer';
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.ethereal.email',
+  port: 587,
+  auth: {
+      user: 'telly89@ethereal.email',
+      pass: 'qBA3arDFWw9Z2nTBnQ'
+  }
+});
+
 const MODE = process.argv[5] || "FORK";
 
 let server;
@@ -61,6 +72,16 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   const FACEBOOK_CLIENT_ID = "155027036736895";
   const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
 
+  const sendEmail = (mailOptions) => {
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        logger.log('error', err);
+        return err;
+      }
+      logger.log('info', info);
+    })
+  }
+
   passport.use(
     "login",
     new FacebookStrategy(
@@ -73,6 +94,17 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       },
       (accessToken, refreshToken, profile, done) => {
         logger.log("info", `User Profile: ${profile}`);
+
+        // SEND LOGIN EMAIL
+        const mailOptions = {
+          from: "Servidor Backend - Inicio de Sesion con Facebook",
+          to: 'telly89@ethereal.email',
+          subject: 'Usuario inicio sesión con facebook',
+          html: process.argv[3] || `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`
+        }
+
+        sendEmail(mailOptions)
+      
         return done(null, profile);
       }
     )
@@ -259,6 +291,15 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   });
 
   app.get("/logout", async (req, res) => {
+    // SEND LOGIN EMAIL
+    const mailOptions = {
+      from: "Servidor Backend - Cierre de Sesion con Facebook",
+      to: 'telly89@ethereal.email',
+      subject: 'Usuario cerró sesión con facebook',
+      html: process.argv[3] || `<h2>Log Out</h2><p>Usuario: ${req.session.passport.user.displayName}</p><p>Horario: ${new Date()}</p>`
+    }
+
+    sendEmail(mailOptions)
     req.logout();
     req.session.destroy((err) => {
       res.redirect("/");

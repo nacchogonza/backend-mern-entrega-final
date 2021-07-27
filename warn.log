@@ -245,3 +245,5 @@
 {"level":"warn","message":"servidor inicializado en 8081"}
 {"level":"warn","message":"servidor inicializado en 8081"}
 {"level":"warn","message":"Servidor cerrado con código: SIGINT"}
+{"level":"warn","message":"Servidor cerrado con código: 1"}
+{"level":"warn","message":"Servidor cerrado con código: 1"}
