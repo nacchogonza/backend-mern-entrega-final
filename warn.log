@@ -247,3 +247,5 @@
 {"level":"warn","message":"Servidor cerrado con código: SIGINT"}
 {"level":"warn","message":"Servidor cerrado con código: 1"}
 {"level":"warn","message":"Servidor cerrado con código: 1"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}

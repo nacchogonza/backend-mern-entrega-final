@@ -232,3 +232,5 @@
 {"level":"error","message":"servidor inicializado en 8081"}
 {"level":"error","message":"servidor inicializado en 8081"}
 {"level":"error","message":"servidor inicializado en 8081"}
+{"code":"EENVELOPE","command":"API","level":"error"}
+{"code":"EENVELOPE","command":"API","level":"error"}

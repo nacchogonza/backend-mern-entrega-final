@@ -28,12 +28,20 @@ import { fork } from "child_process";
 
 import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
+const transporterEthereal = nodemailer.createTransport({
   host: 'smtp.ethereal.email',
   port: 587,
   auth: {
       user: 'telly89@ethereal.email',
       pass: 'qBA3arDFWw9Z2nTBnQ'
+  }
+});
+
+const transporterGmail = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+      user: 'nachomgonzalez93@gmail.com',
+      pass: 'ouikpvfrztcmqqhy'
   }
 });
 
@@ -72,8 +80,18 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   const FACEBOOK_CLIENT_ID = "155027036736895";
   const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
 
-  const sendEmail = (mailOptions) => {
-    transporter.sendMail(mailOptions, (err, info) => {
+  const sendEtherealEmail = (mailOptions) => {
+    transporterEthereal.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        logger.log('error', err);
+        return err;
+      }
+      logger.log('info', info);
+    })
+  }
+
+  const sendGmailEmail = (mailOptions) => {
+    transporterGmail.sendMail(mailOptions, (err, info) => {
       if (err) {
         logger.log('error', err);
         return err;
@@ -93,17 +111,27 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
         scope: ["email"],
       },
       (accessToken, refreshToken, profile, done) => {
+        console.log(profile.photos[0].value)
         logger.log("info", `User Profile: ${profile}`);
 
         // SEND LOGIN EMAIL
-        const mailOptions = {
+        const mailOptionsEthereal = {
           from: "Servidor Backend - Inicio de Sesion con Facebook",
           to: 'telly89@ethereal.email',
           subject: 'Usuario inicio sesión con facebook',
-          html: process.argv[3] || `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`
+          html: `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`
         }
 
-        sendEmail(mailOptions)
+        const mailOptionsGmail = {
+          from: "Servidor Backend - Inicio de Sesion con Facebook",
+          to: 'nachomgonzalez93@gmail.com',
+          subject: 'Usuario inicio sesión con facebook',
+          html: `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`,
+          attachments: [{path: profile.photos[0].value}]
+        }
+
+        sendEtherealEmail(mailOptionsEthereal)
+        sendGmailEmail(mailOptionsGmail)
       
         return done(null, profile);
       }
@@ -299,7 +327,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       html: process.argv[3] || `<h2>Log Out</h2><p>Usuario: ${req.session.passport.user.displayName}</p><p>Horario: ${new Date()}</p>`
     }
 
-    sendEmail(mailOptions)
+    sendEtherealEmail(mailOptions)
     req.logout();
     req.session.destroy((err) => {
       res.redirect("/");
