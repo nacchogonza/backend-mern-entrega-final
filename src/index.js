@@ -1,7 +1,10 @@
 import express from "express";
 import cluster from "cluster";
 import os from "os";
-import { routerApi } from "./RouterApi.js";
+
+import { routerApi } from "./router/RouterApi.js";
+import { routerPassport } from "./router/routerPassport.js";
+
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
 import {
@@ -10,10 +13,10 @@ import {
   insertMessage,
   findProducts,
   insertProduct,
-} from "../db/mongoDB.js";
-import faker from "faker";
-import compression from "compression";
-import { logger } from "./logger.js";
+} from "./db/mongoDB.js";
+import { sendSms } from './controller/senderFunctions.js'
+
+import { logger } from "./controller/logger.js";
 
 import cookieParser from "cookie-parser";
 import session from "express-session";
@@ -22,37 +25,6 @@ import MongoStore from "connect-mongo";
 
 /* PASSPORT */
 import passport from "passport";
-import { Strategy as FacebookStrategy } from "passport-facebook";
-
-import { fork } from "child_process";
-
-import nodemailer from 'nodemailer';
-import clientTwilio from 'twilio';
-
-const etherealHost = 'smtp.ethereal.email'
-const etherealPort = 587
-const etherealUser = 'telly89@ethereal.email'
-const etherealPass = 'qBA3arDFWw9Z2nTBnQ'
-
-const transporterEthereal = nodemailer.createTransport({
-  host: etherealHost,
-  port: etherealPort,
-  auth: {
-      user: etherealUser,
-      pass: etherealPass
-  }
-});
-
-const gmailUser = 'nachomgonzalez93@gmail.com'
-const gmailPass = 'ouikpvfrztcmqqhy'
-
-const transporterGmail = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-      user: gmailUser,
-      pass: gmailPass
-  }
-});
 
 const MODE = process.argv[5] || "FORK";
 
@@ -85,108 +57,6 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
   const URL =
     "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
-
-  const sendEtherealEmail = (mailOptions) => {
-    transporterEthereal.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        logger.log('error', err);
-        return err;
-      }
-      logger.log('info', info);
-    })
-  }
-
-  const sendGmailEmail = (mailOptions) => {
-    transporterGmail.sendMail(mailOptions, (err, info) => {
-      if (err) {
-        logger.log('error', err);
-        return err;
-      }
-      logger.log('info', info);
-    })
-  }
-
-  /* TWILIO CONFIG & UTILS */
-  const getWordPosition = (palabra, frase) => {
-    const position = frase.indexOf(palabra);
-    return position;
-  }
-
-  const accountSid = 'AC6a36f7316fe7338f08d867dcdc94b264'
-  const accountToken = '351c5ff7d7bada406d5b4a2fb9f014ad'
-
-  const twilioFrom = '+12027336319'
-  const twilioTo = '+5492945404287'
-
-  const twilioSender = clientTwilio(accountSid, accountToken)
-
-  const sendSms = async (data) => {
-    try {
-      const msg = await twilioSender.messages.create({
-        body: `Mensaje enviado por ${data.nombre}. Texto: ${data.text}`,
-        from: twilioFrom,
-        to: twilioTo
-      })
-    
-      console.log(msg.sid)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  /* TWILIO CONFIG */
-
-  /* PASSPORT FB CONFIG */
-
-  const FACEBOOK_CLIENT_ID = "155027036736895";
-  const FACEBOOK_CLIENT_SECRET = "f268971ed09caf5144ac0db13cf8fad9";
-
-  passport.use(
-    "login",
-    new FacebookStrategy(
-      {
-        clientID: process.argv[2] || FACEBOOK_CLIENT_ID,
-        clientSecret: process.argv[3] || FACEBOOK_CLIENT_SECRET,
-        callbackURL: "http://localhost:8080/auth/facebook/callback",
-        profileFields: ["id", "displayName", "photos", "emails"],
-        scope: ["email"],
-      },
-      (accessToken, refreshToken, profile, done) => {
-        console.log(profile.photos[0].value)
-        logger.log("info", `User Profile: ${profile}`);
-
-        // SEND LOGIN EMAIL
-        const mailOptionsEthereal = {
-          from: "Servidor Backend - Inicio de Sesion con Facebook",
-          to: 'telly89@ethereal.email',
-          subject: 'Usuario inicio sesión con facebook',
-          html: `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`
-        }
-
-        const mailOptionsGmail = {
-          from: "Servidor Backend - Inicio de Sesion con Facebook",
-          to: 'nachomgonzalez93@gmail.com',
-          subject: 'Usuario inicio sesión con facebook',
-          html: `<h2>Log In</h2><p>Usuario: ${profile.displayName}</p><p>Horario: ${new Date()}</p>`,
-          attachments: [{path: profile.photos[0].value}]
-        }
-
-        sendEtherealEmail(mailOptionsEthereal)
-        sendGmailEmail(mailOptionsGmail)
-      
-        return done(null, profile);
-      }
-    )
-  );
-
-  passport.serializeUser(function (user, done) {
-    done(null, user);
-  });
-
-  passport.deserializeUser(async function (obj, done) {
-    done(null, obj);
-  });
-
-  /* PASSPORT FB CONFIG */
 
   const app = express();
   const httpServer = new HttpServer(app);
@@ -224,6 +94,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   app.set("view engine", "ejs");
 
   app.use("/api", routerApi);
+  app.use("/", routerPassport);
 
   app.use("/", express.static("public"));
 
@@ -245,137 +116,6 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       }
       await insertMessage(data);
       socket.emit("messages", await findMessages());
-    });
-  });
-
-  function isAuth(req, res, next) {
-    if (req.isAuthenticated()) {
-      next();
-    } else {
-      res.redirect("/login");
-    }
-  }
-
-  app.get("/", isAuth, async (req, res) => {
-    res.redirect("/home");
-  });
-
-  // LOGIN
-  app.get("/login", (req, res) => {
-    res.render("pages/loginFacebook");
-  });
-
-  /* FACEBOOK LOGIN */
-
-  app.get("/auth/facebook", passport.authenticate("login"));
-
-  app.get(
-    "/auth/facebook/callback",
-    passport.authenticate("login", {
-      successRedirect: "/home",
-      failureRedirect: "/faillogin",
-    })
-  );
-
-  // app.post('/login', passport.authenticate('login', { failureRedirect: '/faillogin', successRedirect: '/home' }))
-
-  app.get("/faillogin", (req, res) => {
-    res.render("pages/login-error", {});
-  });
-
-  app.get("/home", isAuth, async (req, res) => {
-    const data = await findProducts();
-    res.render("pages/products", {
-      products: data,
-      user: req.session.passport.user,
-    });
-  });
-
-  app.get("/vista", async (req, res) => {
-    let cant;
-    const cantParam = parseInt(req.query.cant);
-    isNaN(cantParam) ? (cant = 10) : (cant = cantParam);
-    const data = [];
-    for (let i = 1; i < cant + 1; i++) {
-      const object = {
-        title: faker.commerce.productName(),
-        price: faker.commerce.price(),
-        thumbnail: faker.random.image(),
-      };
-      data.push(object);
-    }
-    res.render("pages/productsMock", {
-      productsMock: data,
-    });
-  });
-
-  const randoms_child = fork("./src/randoms.js");
-
-  /* app.get("/randoms", (req, res) => {
-  const cant = req.query.cant;
-
-  randoms_child.send(["start", cant]);
-  randoms_child.on("message", (randoms) => {
-    res.end("Ok: " + randoms);
-  });
-}); */
-
-  /* Process Info Route */
-  app.get("/info", (req, res) => {
-    res.send(`
-    Argumentos de entrada: ${process.argv}<br>
-    Plataforma: ${process.platform}<br>
-    Version de Node: ${process.version}<br>
-    ID del proceso: ${process.pid}<br>
-    Directorio de Trabajo: ${process.cwd()}<br>
-    Directorio de Ejecucion: ${process.argv[0]}<br>
-    Cantidad de procesadores en el : ${os.cpus().length}<br>
-  `);
-  });
-
-  app.get("/info-console", (req, res) => {
-    console.log("Example console log");
-    res.send(`
-    Argumentos de entrada: ${process.argv}<br>
-    Plataforma: ${process.platform}<br>
-    Version de Node: ${process.version}<br>
-    ID del proceso: ${process.pid}<br>
-    Directorio de Trabajo: ${process.cwd()}<br>
-    Directorio de Ejecucion: ${process.argv[0]}<br>
-    Cantidad de procesadores en el : ${os.cpus().length}<br>
-  `);
-  });
-
-  app.get("/infozip", compression(), (req, res) => {
-    res.send(`
-    Argumentos de entrada: ${process.argv}<br>
-    Plataforma: ${process.platform}<br>
-    Version de Node: ${process.version}<br>
-    ID del proceso: ${process.pid}<br>
-    Directorio de Trabajo: ${process.cwd()}<br>
-    Directorio de Ejecucion: ${process.argv[0]}<br>
-    Cantidad de procesadores en el : ${os.cpus().length}<br>
-  `);
-  });
-
-  /* EXIT Test Route */
-  app.get("/exit", (req, res) => {
-    process.exit();
-  });
-
-  app.get("/logout", async (req, res) => {
-    // SEND LOGIN EMAIL
-    const mailOptions = {
-      from: "Servidor Backend - Cierre de Sesion con Facebook",
-      to: 'telly89@ethereal.email',
-      subject: 'Usuario cerró sesión con facebook',
-      html: process.argv[3] || `<h2>Log Out</h2><p>Usuario: ${req.session.passport.user.displayName}</p><p>Horario: ${new Date()}</p>`
-    }
-
-    sendEtherealEmail(mailOptions)
-    req.logout();
-    req.session.destroy((err) => {
-      res.redirect("/");
     });
   });
 
