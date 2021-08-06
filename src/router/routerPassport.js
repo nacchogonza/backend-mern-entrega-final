@@ -31,7 +31,6 @@ passport.use(
       scope: ["email"],
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log(profile.photos[0].value);
       logger.log("info", `User Profile: ${profile}`);
 
       // SEND LOGIN EMAIL
