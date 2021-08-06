@@ -1,23 +1,5 @@
 import mongoose from "mongoose";
-import normalizr from "normalizr";
 import { logger } from "../controller/logger.js";
-const { schema } = normalizr;
-const normalize = normalizr.normalize;
-import util from "util";
-
-function print(objeto) {
-  console.log(util.inspect(objeto, false, 12, true));
-}
-
-const schemaAuthor = new schema.Entity("author", {}, { idAttribute: "email" });
-
-const messages = new schema.Entity(
-  "messages",
-  {
-    author: schemaAuthor,
-  },
-  { idAttribute: "_id" }
-);
 
 /* SCHEMAS */
 
@@ -129,31 +111,15 @@ export const connectDB = () => {
 export const findMessages = async () => {
   try {
     const data = await DaoMensajes.find({});
-    const dataJson = JSON.parse(JSON.stringify(data));
-    /* normalizador */
-    const normalizedData = normalize(dataJson, [messages]);
-    // print(normalizedData)
-
-    return normalizedData;
+    return data
   } catch (error) {
-    logger.log("error", `Error al obtener mensajes: ${error}`);
+    logger.log("error", `Error al obtener mensajes de la DB: ${error}`);
   }
 };
 
 export const insertMessage = async (newMessage) => {
   try {
-    return await DaoMensajes.create({
-      author: {
-        email: newMessage.email,
-        nombre: newMessage.nombre,
-        apellido: newMessage.apellido,
-        edad: newMessage.edad,
-        alias: newMessage.alias,
-        avatar: newMessage.avatar,
-      },
-      text: newMessage.text,
-      date: newMessage.date,
-    });
+    return await DaoMensajes.create(newMessage);
   } catch (error) {
     logger.log("error", `Error al insertar mensaje: ${error}`);
   }

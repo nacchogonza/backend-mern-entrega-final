@@ -75,4 +75,4 @@ const sendSms = async (data) => {
 };
 /* TWILIO CONFIG */
 
-export { sendEtherealEmail, sendGmailEmail, sendSms };
+export { sendEtherealEmail, sendGmailEmail, sendSms, getWordPosition };

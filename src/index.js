@@ -9,12 +9,10 @@ import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
 import {
   connectDB,
-  findMessages,
-  insertMessage,
   findProducts,
   insertProduct,
 } from "./db/mongoDB.js";
-import { sendSms } from './controller/senderFunctions.js'
+import { sendSms, getWordPosition } from './controller/senderFunctions.js'
 
 import { logger } from "./controller/logger.js";
 
@@ -25,6 +23,7 @@ import MongoStore from "connect-mongo";
 
 /* PASSPORT */
 import passport from "passport";
+import { getMessagesController, instertMessageController } from "./controller/controllers.js";
 
 const MODE = process.argv[5] || "FORK";
 
@@ -103,7 +102,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
 
     socket.emit("productos", await findProducts());
 
-    socket.emit("messages", await findMessages());
+    socket.emit("messages", await getMessagesController());
 
     socket.on("new-product", async (product) => {
       await insertProduct(product);
@@ -114,8 +113,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       if (getWordPosition('administrador', data.text) !== -1) {
         await sendSms(data);
       }
-      await insertMessage(data);
-      socket.emit("messages", await findMessages());
+      await instertMessageController(data);
+      socket.emit("messages", await getMessagesController());
     });
   });
 
