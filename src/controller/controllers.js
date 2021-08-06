@@ -3,7 +3,14 @@ const normalize = normalizr.normalize;
 const { schema } = normalizr;
 import util from "util";
 import { logger } from "./logger.js";
-import { findMessages, insertMessage } from "../db/mongoDB.js";
+import {
+  findMessages,
+  findProducts,
+  insertMessage,
+  insertProduct,
+  putProduct,
+  removeProduct,
+} from "../db/mongoDB.js";
 
 function print(objeto) {
   console.log(util.inspect(objeto, false, 12, true));
@@ -52,4 +59,77 @@ const instertMessageController = async (newMessage) => {
   }
 };
 
-export { getMessagesController, instertMessageController };
+const getProductsController = async () => {
+  try {
+    const products = await findProducts();
+    return products;
+  } catch (error) {
+    logger.log("error", `Error al obtener productos en controller: ${error}`);
+  }
+};
+
+const getProductController = async (id) => {
+  try {
+    const product = await findProducts(id);
+    return product;
+  } catch (error) {
+    logger.log(
+      "error",
+      `Error al obtener producto ${id} en controller: ${error}`
+    );
+  }
+};
+
+const putProductController = async (updateProduct, id) => {
+  try {
+    const updateStatus = await putProduct(updateProduct, id);
+
+    if (updateStatus?.ok === 1) {
+      const product = await getProductController(id);
+      return product;
+    }
+
+    return null;
+  } catch (error) {
+    logger.log(
+      "error",
+      `Error al actualizando el producto ${id} en controller: ${error}`
+    );
+  }
+};
+
+const removeProductController = async (id) => {
+  try {
+    return removeProduct(id);
+  } catch (error) {
+    logger.log(
+      "error",
+      `Error al eliminando el producto ${id} en controller: ${error}`
+    );
+  }
+};
+
+const insertProductController = async (newProduct) => {
+  try {
+    return await insertProduct({
+      title: newProduct.title,
+      price: newProduct.price,
+      thumbnail: newProduct.thumbnail,
+    });
+  } catch (error) {
+    logger.log(
+      "error",
+      `Error al agregando nuevo producto en controller: ${error}`
+    );
+  }
+};
+
+export {
+  getMessagesController,
+  instertMessageController,
+  getProductsController,
+  getProductController,
+  putProductController,
+  removeProductController,
+  insertProductController,
+};

@@ -1,18 +1,19 @@
 import express from "express";
-import {
-  insertProduct,
-  findProducts,
-  findProduct,
-  putProduct,
-  removeProduct,
-} from "../db/mongoDB.js";
+
+import { 
+  getProductController, 
+  getProductsController, 
+  insertProductController, 
+  putProductController, 
+  removeProductController
+} from "../controller/controllers.js";
 
 const routerApi = express.Router();
 routerApi.use(express.json());
 routerApi.use(express.urlencoded({ extended: true }));
 
 routerApi.get("/productos", async (req, res) => {
-  const data = await findProducts();
+  const data = await getProductsController();
   if (!data.length) {
     res.json({ error: "no hay productos cargados" });
   }
@@ -22,7 +23,7 @@ routerApi.get("/productos", async (req, res) => {
 routerApi.post("/productos", async (req, res) => {
   const data = req.body;
   data.price = parseFloat(data.price);
-  const newProduct = await insertProduct({
+  const newProduct = await insertProductController({
     title: data.title,
     price: data.price,
     thumbnail: data.thumbnail,
@@ -31,7 +32,7 @@ routerApi.post("/productos", async (req, res) => {
 });
 
 routerApi.get("/productos/:id", async (req, res) => {
-  const filterProduct = await findProduct(req.params.id);
+  const filterProduct = await getProductController(req.params.id);
   if (!filterProduct) res.json({ error: "producto no encontrado" });
   res.json(filterProduct);
 });
@@ -39,7 +40,7 @@ routerApi.get("/productos/:id", async (req, res) => {
 routerApi.put("/productos/:id", async (req, res) => {
   const data = req.body;
   data.price = parseFloat(data.price);
-  const updateProduct = await putProduct(
+  const updateProduct = await putProductController(
     {
       title: data.title,
       price: data.price,
@@ -52,7 +53,7 @@ routerApi.put("/productos/:id", async (req, res) => {
 });
 
 routerApi.delete("/productos/:id", async (req, res) => {
-  const deleteProduct = await removeProduct(req.params.id);
+  const deleteProduct = await removeProductController(req.params.id);
   if (!deleteProduct) res.json({ error: "producto no encontrado" });
   res.json(deleteProduct);
 });

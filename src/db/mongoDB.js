@@ -65,29 +65,10 @@ const productosSchema = new mongoose.Schema({
   },
 });
 
-const usuariosSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    require: true,
-    max: 255,
-  },
-  password: {
-    type: String,
-    require: true,
-    max: 255,
-  },
-  direccion: {
-    type: String,
-    require: true,
-    max: 255,
-  },
-});
-
 /* MODELS */
 
 const DaoMensajes = mongoose.model("mensajes", mensajesSchema);
 const DaoProductos = mongoose.model("productos", productosSchema);
-const DaoUsuarios = mongoose.model("usuarios", usuariosSchema);
 
 /* DB CONNECT */
 
@@ -129,24 +110,23 @@ export const insertMessage = async (newMessage) => {
 
 export const findProducts = async () => {
   try {
-    const products = await DaoProductos.find({});
-    return products;
+    return await DaoProductos.find({});
   } catch (error) {
-    logger.log("error", `Error al obtener productos: ${error}`);
+    logger.log("error", `Error al obtener productos de la DB: ${error}`);
   }
 };
+
 export const findProduct = async (id) => {
   try {
-    const product = await DaoProductos.findOne({ _id: id });
-    return product;
+    return await DaoProductos.findOne({ _id: id });
   } catch (error) {
-    logger.log("error", `Error al obtener producto: ${error}`);
+    logger.log("error", `Error al obtener producto en la DB: ${error}`);
   }
 };
 
 export const putProduct = async (updateProduct, id) => {
   try {
-    const updateStatus = await DaoProductos.updateOne(
+    return await DaoProductos.updateOne(
       { _id: id },
       {
         $set: {
@@ -156,56 +136,23 @@ export const putProduct = async (updateProduct, id) => {
         },
       }
     );
-    if (updateStatus?.ok === 1) {
-      const product = await DaoProductos.findOne({ _id: id });
-      return product;
-    }
-    return null;
   } catch (error) {
-    logger.log("error", `Error al modificar producto: ${error}`);
+    logger.log("error", `Error al modificar producto en DB: ${error}`);
   }
 };
 
 export const removeProduct = async (id) => {
   try {
-    const removeStatus = await DaoProductos.findOneAndRemove({ _id: id });
-    return removeStatus;
+    return await DaoProductos.findOneAndRemove({ _id: id });
   } catch (error) {
-    logger.log("error", `Error al borrar producto: ${error}`);
+    logger.log("error", `Error al borrar producto de la DB: ${error}`);
   }
 };
 
 export const insertProduct = async (newProduct) => {
   try {
-    return await DaoProductos.create({
-      title: newProduct.title,
-      price: newProduct.price,
-      thumbnail: newProduct.thumbnail,
-    });
+    return await DaoProductos.create(newProduct);
   } catch (error) {
-    logger.log("error", `Error al insertar mensaje: ${error}`);
-  }
-};
-
-/* USUARIOS */
-
-export const findUsuarios = async () => {
-  try {
-    const users = await DaoUsuarios.find({});
-    return users;
-  } catch (error) {
-    logger.log("error", `Error al obtener usuarios: ${error}`);
-  }
-};
-
-export const insertUsuario = async (newUser) => {
-  try {
-    return await DaoUsuarios.create({
-      username: newUser.username,
-      password: newUser.password,
-      direccion: newUser.direccion,
-    });
-  } catch (error) {
-    logger.log("error", `Error al insertar usuario: ${error}`);
+    logger.log("error", `Error al insertar producto en DB: ${error}`);
   }
 };

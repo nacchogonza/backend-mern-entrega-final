@@ -9,7 +9,7 @@ import {
   sendGmailEmail,
 } from "../controller/senderFunctions.js";
 
-import { findProducts } from "../db/mongoDB.js";
+import { getProductsController } from "../controller/controllers.js";
 
 const routerPassport = express.Router();
 routerPassport.use(express.json());
@@ -106,7 +106,7 @@ routerPassport.get("/faillogin", (req, res) => {
 });
 
 routerPassport.get("/home", isAuth, async (req, res) => {
-  const data = await findProducts();
+  const data = await getProductsController();
   res.render("pages/products", {
     products: data,
     user: req.session.passport.user,

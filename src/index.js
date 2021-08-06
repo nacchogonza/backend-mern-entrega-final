@@ -9,9 +9,8 @@ import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
 import {
   connectDB,
-  findProducts,
-  insertProduct,
 } from "./db/mongoDB.js";
+
 import { sendSms, getWordPosition } from './controller/senderFunctions.js'
 
 import { logger } from "./controller/logger.js";
@@ -23,7 +22,7 @@ import MongoStore from "connect-mongo";
 
 /* PASSPORT */
 import passport from "passport";
-import { getMessagesController, instertMessageController } from "./controller/controllers.js";
+import { getMessagesController, getProductsController, insertProductController, instertMessageController } from "./controller/controllers.js";
 
 const MODE = process.argv[5] || "FORK";
 
@@ -100,13 +99,13 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   io.on("connection", async (socket) => {
     logger.log("info", "Nuevo cliente conectado!");
 
-    socket.emit("productos", await findProducts());
+    socket.emit("productos", await getProductsController());
 
     socket.emit("messages", await getMessagesController());
 
     socket.on("new-product", async (product) => {
-      await insertProduct(product);
-      socket.emit("productos", await findProducts());
+      await insertProductController(product);
+      socket.emit("productos", await getProductsController());
     });
 
     socket.on("new-message", async (data) => {
