@@ -1,7 +1,7 @@
 
 const socket = io.connect();
 
-socket.on('productos', productos => {
+/* socket.on('productos', productos => {
   if (!productos.length) {
     htmlNoProducts = `
     <div style="overflow: hidden; box-sizing: border-box; text-align: center;">
@@ -25,20 +25,74 @@ socket.on('productos', productos => {
     `
     )).join(" ")
   document.getElementById("tablaDeProductos").innerHTML = htmlCode
-})
+}) */
 
-const addProduct = () => {
+const dataProductos = fetch('/graphql?query={products {title, price, thumbnail}}')
+  .then(res => res.json())
+  .then(data => {
+    const {data: { products }} = data
+    if (!products.length) {
+      htmlNoProducts = `
+      <div style="overflow: hidden; box-sizing: border-box; text-align: center;">
+        <div class="bg-warning" style="padding: 5px; text-align: center;">
+          <h3>No se encontraron productos cargados</h1>
+        </div>
+      </div>
+      `;
+      document.getElementById("tablaDeProductos").innerHTML = htmlNoProducts
+      return
+    }
+    let htmlCode = products.map(product => (
+      `
+        <tr>
+          <td style="vertical-align: middle;">${product.title}</td>
+          <td style="vertical-align: middle;">$ ${product.price}</td>
+          <td class="w-25">
+            <img src=${product.thumbnail} style="width: 50px;" />
+          </td>
+        </tr>
+      `
+      )).join(" ")
+    document.getElementById("tablaDeProductos").innerHTML = htmlCode
+  })
+  .catch(console.error)
+
+const addProduct = async () => {
   let producto = {
     title: document.getElementById("title").value,
     price: document.getElementById("price").value,
     thumbnail: document.getElementById("thumbnail").value
   }
 
-  socket.emit('new-product', producto);
+
+  await fetch(`/graphql?`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      query: `
+      mutation InsertProduct {
+        insertProduct(title: "${producto.title}", thumbnail: "${producto.thumbnail}", price: ${producto.price}){
+          title
+          thumbnail
+          price
+        }
+      }
+      `
+    })
+  })
+  .then(res => res.json())
+  .then(data => console.log('producto agregado a base de datos!', data))
+  .catch(console.error)
+
+  // socket.emit('new-product', producto);
 
   document.getElementById('title').value = ''
   document.getElementById('price').value = ''
   document.getElementById('thumbnail').value = ''
+  window.location.reload()
   return false;
 }
 
@@ -107,7 +161,6 @@ function loginUser(e) {
     username: user,
     password
  })
-  // window.location.assign(`/login?username=${user}&password=${password}`)
   return false 
 }
 

@@ -7,11 +7,9 @@ import { routerPassport } from "./router/routerPassport.js";
 
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
-import {
-  connectDB,
-} from "./db/mongoDB.js";
+import { connectDB } from "./db/mongoDB.js";
 
-import { sendSms, getWordPosition } from './controller/senderFunctions.js'
+import { sendSms, getWordPosition } from "./controller/senderFunctions.js";
 
 import { logger } from "./controller/logger.js";
 
@@ -22,7 +20,16 @@ import MongoStore from "connect-mongo";
 
 /* PASSPORT */
 import passport from "passport";
-import { getMessagesController, getProductsController, insertProductController, instertMessageController } from "./controller/controllers.js";
+import {
+  getMessagesController,
+  getProductController,
+  getProductsController,
+  insertProductController,
+  instertMessageController,
+} from "./controller/controllers.js";
+
+import { graphqlHTTP } from "express-graphql";
+import { buildSchema } from "graphql";
 
 const MODE = process.argv[5] || "FORK";
 
@@ -96,6 +103,68 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
 
   app.use("/", express.static("public"));
 
+  /*  GRAPHQL */
+  const schema = buildSchema(`
+    type Query {
+      product(_id: String!): Product
+      products: [Product]
+    },
+    type Mutation {
+      insertProduct(title: String, price: Float, thumbnail: String): Product
+    },
+    type Product {
+      _id: String
+      title: String
+      price: Float
+      thumbnail: String
+    }
+`);
+
+  const getProducts = async () => {
+    const dataGetProducts = await getProductsController();
+    return dataGetProducts;
+  };
+
+  const getProduct = async (id) => {
+    const dataGetProduct = await getProductController(id);
+    return dataGetProduct;
+  };
+
+  const insertProduct = async ({title, price, thumbnail}) => {
+    
+    /* MUTATION EXAMPLE */
+    /* 
+      mutation InsertProduct($title: String, $thumbnail: String, $price: Float) {
+        insertProduct(title: $title, thumbnail: $thumbnail, price: $price){
+          title
+          thumbnail
+          price
+        }
+      }
+    */
+
+    const dataInsertProduct = await insertProductController({
+      title,
+      price,
+      thumbnail
+    });
+    return dataInsertProduct;
+  };
+
+
+  const root = {
+    product: getProduct,
+    products: getProducts,
+    insertProduct: insertProduct
+  };
+  /*  GRAPHQL */
+
+  app.use("/graphql", graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+  }));
+
   io.on("connection", async (socket) => {
     logger.log("info", "Nuevo cliente conectado!");
 
@@ -109,7 +178,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     });
 
     socket.on("new-message", async (data) => {
-      if (getWordPosition('administrador', data.text) !== -1) {
+      if (getWordPosition("administrador", data.text) !== -1) {
         await sendSms(data);
       }
       await instertMessageController(data);
