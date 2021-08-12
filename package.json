@@ -8,7 +8,8 @@
     "start": "node ./src/index.js",
     "prod": "forever start ./src/index.js",
     "autocannon": "node ./src/benchmark.js",
-    "test": "0x ./src/index.js"
+    "test": "0x ./src/index.js",
+    "test-mocha": "mocha ./test/api.test.js"
   },
   "author": "Ignacio Martin Gonzalez",
   "license": "ISC",
@@ -40,5 +41,11 @@
     "socket.io": "^4.0.1",
     "twilio": "^3.66.0",
     "winston": "^3.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^9.0.3",
+    "request": "^2.88.2",
+    "supertest": "^6.1.5"
   }
 }
