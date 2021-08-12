@@ -251,3 +251,34 @@
 {"code":"EENVELOPE","command":"API","level":"error"}
 {"level":"warn","message":"Servidor cerrado con código: 1"}
 {"level":"warn","message":"Servidor cerrado con código: 1"}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to Number failed for value \"NaN\" (type number) at path \"price\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to Number failed for value \"NaN\" (type number) at path \"price\""}
+{"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
