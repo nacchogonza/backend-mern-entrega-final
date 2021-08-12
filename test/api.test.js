@@ -36,6 +36,21 @@ describe("test api rest", () => {
     });
   });
 
+  describe("POST", () => {
+    it("return 500 code when id not exist", async () => {
+      let response = await request.post("/api/productos");
+      // console.log(response);
+      expect(response.status).to.eql(500);
+    });
+
+    it("return 200 code when call /productos", async () => {
+      const producto = getProduct()
+      let response = await request.post(`/api/productos`).send(producto);
+      // console.log(response);
+      expect(response.status).to.eql(200);
+    });
+  });
+
   describe("PUT", () => {
     it("return 404 code when id not exist", async () => {
       let response = await request.put("/api/productos/1");
@@ -50,6 +65,20 @@ describe("test api rest", () => {
         thumbnail: 'AAA'
       }
       let response = await request.put(`/api/productos/${PRODUCT_ID_GET}`).send(producto);
+      // console.log(response);
+      expect(response.status).to.eql(200);
+    });
+  });
+
+  describe("DELETE", () => {
+    it("return 404 code when id not exist", async () => {
+      let response = await request.delete("/api/productos/1");
+      // console.log(response);
+      expect(response.status).to.eql(404);
+    });
+
+    it("return 200 code when call /productos", async () => {
+      let response = await request.delete(`/api/productos/${PRODUCT_ID_GET}`).send(producto);
       // console.log(response);
       expect(response.status).to.eql(200);
     });

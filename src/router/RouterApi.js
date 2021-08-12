@@ -29,6 +29,10 @@ routerApi.post("/productos", async (req, res) => {
     price: data.price,
     thumbnail: data.thumbnail,
   });
+  if (!newProduct) {
+    res.status(500).json({ error: "no se pudo agregar el producto" });
+    return
+  }
   res.status(200).json(newProduct);
 });
 
