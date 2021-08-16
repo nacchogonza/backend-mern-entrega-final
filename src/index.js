@@ -2,8 +2,8 @@ import express from "express";
 import cluster from "cluster";
 import os from "os";
 
-import { routerApi } from "./router/RouterApi.js";
-import { routerPassport } from "./router/routerPassport.js";
+import { routerApi } from "./routes/RouterApi.js";
+import { routerPassport } from "./routes/routerPassport.js";
 
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
@@ -96,7 +96,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.set("view engine", "ejs");
+  app.set("view engine", "ejs", );
+  app.set("views", "src/views")
 
   app.use("/api", routerApi);
   app.use("/", routerPassport);
