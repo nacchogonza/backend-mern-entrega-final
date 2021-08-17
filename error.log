@@ -276,3 +276,8 @@
 {"level":"error","message":"Error al obtener productos en controller: TypeError: Cannot read property 'connection' of undefined"}
 {"level":"error","message":"Error al obtener mensajes del controller: TypeError: Cannot read property 'connection' of undefined"}
 {"level":"error","message":"Error al conectar a la base de datos: ReferenceError: mongoose is not defined"}
+{"level":"error","message":"Error al agregando nuevo producto en controller: TypeError: logger is not a function"}
+{"level":"error","message":"Error al agregando nuevo producto en controller: TypeError: logger is not a function"}
+{"level":"error","message":"Error al agregando nuevo producto en controller: TypeError: logger is not a function"}
+{"level":"error"}
+{"level":"error"}

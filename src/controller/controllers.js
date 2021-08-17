@@ -1,7 +1,6 @@
 import normalizr from "normalizr";
 const normalize = normalizr.normalize;
 const { schema } = normalizr;
-import util from "util";
 import { logger } from "./logger.js";
 import FactoryPersistence from '../factory/dbFactory.js';
 

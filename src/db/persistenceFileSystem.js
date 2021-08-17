@@ -21,55 +21,89 @@ export class persistenceFileSystem {
       const mensajes = await fs.promises.readFile("mensajes.txt");
       return JSON.parse(mensajes);
     } catch (error) {
-      logger("error", error);
+      logger.log("error", error);
     }
   };
 
   insertMessage = async (newMessage) => {
     try {
-      const mensajes = JSON.parse(await fs.promises.readFile('mensajes.txt'))
+      const mensajes = JSON.parse(await fs.promises.readFile("mensajes.txt"));
       newMessage.id = mensajes.length + 1;
       mensajes.push(newMessage);
-      await fs.promises.writeFile('mensajes.txt', JSON.stringify(mensajes))
+      await fs.promises.writeFile("mensajes.txt", JSON.stringify(mensajes));
       return newMessage;
     } catch (error) {
-      logger("error", error);
+      logger.log("error", error);
     }
   };
 
   /* PRODUCTS FUNCTIONS */
 
   findProducts = async () => {
-    return this.productos;
+    try {
+      return JSON.parse(await fs.promises.readFile("productos.txt"));
+    } catch (error) {
+      logger.log("error", error);
+    }
   };
 
   findProduct = async (id) => {
-    const product = this.productos.find((producto) => producto.id == id);
-    return product;
+    try {
+      const productosData = await fs.promises.readFile("productos.txt");
+      const productos = JSON.parse(productosData);
+      const producto = productos.find((p) => p.id == id);
+      return producto;
+    } catch (error) {
+      logger.log("error", error);
+    }
   };
 
   putProduct = async (updateProduct, id) => {
-    const product = this.productos.find((producto) => producto.id == id);
-    if (!product) return product;
-    product.title = updateProduct.title;
-    product.price = updateProduct.price;
-    product.thumbnail = updateProduct.thumbnail;
-    return product;
+    try {
+      const productosData = await fs.promises.readFile("productos.txt");
+      const productos = JSON.parse(productosData);
+      const producto = productos.find((p) => p.id == id);
+      if (!producto) return producto;
+      producto.title = updateProduct.title;
+      producto.price = updateProduct.price;
+      producto.thumbnail = updateProduct.thumbnail;
+
+      // producto mantiene la referencia y sirve para reemplazar la informacion en FS
+      await fs.promises.writeFile("productos.txt", JSON.stringify(productos));
+      return producto;
+    } catch (error) {
+      logger.log("error", error);
+    }
   };
 
   removeProduct = async (id) => {
-    const product = this.productos.find((producto) => producto.id == id);
-    if (!product) return product;
-    const newProductsArray = this.productos.filter(
-      (producto) => producto.id != id
-    );
-    this.productos = newProductsArray;
-    return product;
+    try {
+      const productosData = await fs.promises.readFile("productos.txt");
+      const productos = JSON.parse(productosData);
+      const producto = productos.find((p) => p.id == id);
+      if (!producto) return producto;
+
+      const newProductsArray = productos.find((p) => p.id != id);
+
+      await fs.promises.writeFile(
+        "productos.txt",
+        JSON.stringify(newProductsArray)
+      );
+      return producto;
+    } catch (error) {
+      logger.log("error", error);
+    }
   };
 
   insertProduct = async (newProduct) => {
-    newProduct.id = this.productos.length + 1;
-    this.productos.push(newProduct);
-    return newProduct;
+    try {
+      const productos = JSON.parse(await fs.promises.readFile("productos.txt"));
+      newProduct.id = productos.length + 1;
+      productos.push(newProduct);
+      await fs.promises.writeFile("productos.txt", JSON.stringify(productos));
+      return newProduct;
+    } catch (error) {
+      logger.log("error", error);
+    }
   };
 }
