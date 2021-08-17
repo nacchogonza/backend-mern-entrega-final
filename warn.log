@@ -282,3 +282,14 @@
 {"level":"error","message":"Error al modificar producto en DB: CastError: Cast to Number failed for value \"NaN\" (type number) at path \"price\""}
 {"level":"error","message":"Error al obtener producto en la DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
 {"level":"error","message":"Error al modificar producto en DB: CastError: Cast to ObjectId failed for value \"1\" (type string) at path \"_id\" for model \"productos\""}
+{"level":"error","message":"Error al obtener productos en controller: ReferenceError: findProducts is not defined"}
+{"level":"error","message":"Error al obtener mensajes del controller: ReferenceError: findMessages is not defined"}
+{"level":"error","message":"Error al obtener productos en controller: ReferenceError: findProducts is not defined"}
+{"level":"error","message":"Error al obtener mensajes del controller: ReferenceError: findMessages is not defined"}
+{"level":"error","message":"Error al obtener productos en controller: ReferenceError: findProducts is not defined"}
+{"level":"error","message":"Error al obtener mensajes del controller: ReferenceError: findMessages is not defined"}
+{"level":"error","message":"Error al obtener productos en controller: ReferenceError: persistence is not defined"}
+{"level":"error","message":"Error al obtener mensajes del controller: ReferenceError: persistence is not defined"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: Cannot read property 'connection' of undefined"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: Cannot read property 'connection' of undefined"}
+{"level":"error","message":"Error al conectar a la base de datos: ReferenceError: mongoose is not defined"}

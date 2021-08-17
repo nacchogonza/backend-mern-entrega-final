@@ -3,19 +3,7 @@ const normalize = normalizr.normalize;
 const { schema } = normalizr;
 import util from "util";
 import { logger } from "./logger.js";
-import {
-  findMessages,
-  findProducts,
-  findProduct,
-  insertMessage,
-  insertProduct,
-  putProduct,
-  removeProduct,
-} from "../db/mongoDB.js";
-
-function print(objeto) {
-  console.log(util.inspect(objeto, false, 12, true));
-}
+import FactoryPersistence from '../factory/dbFactory.js';
 
 const schemaAuthor = new schema.Entity("author", {}, { idAttribute: "email" });
 
@@ -24,12 +12,12 @@ const messages = new schema.Entity(
   {
     author: schemaAuthor,
   },
-  { idAttribute: "_id" }
+  { idAttribute: "id" }
 );
 
 const getMessagesController = async () => {
   try {
-    const data = await findMessages();
+    const data = await FactoryPersistence.connection.findMessages();
     const dataJson = JSON.parse(JSON.stringify(data));
     /* normalizador */
     const normalizedData = normalize(dataJson, [messages]);
@@ -54,7 +42,7 @@ const instertMessageController = async (newMessage) => {
       text: newMessage.text,
       date: newMessage.date,
     };
-    return await insertMessage(data);
+    return await FactoryPersistence.connection.insertMessage(data);
   } catch (error) {
     logger.log("error", `Error al insertar mensaje en controller: ${error}`);
   }
@@ -62,7 +50,7 @@ const instertMessageController = async (newMessage) => {
 
 const getProductsController = async () => {
   try {
-    const products = await findProducts();
+    const products = await FactoryPersistence.connection.findProducts();
     return products;
   } catch (error) {
     logger.log("error", `Error al obtener productos en controller: ${error}`);
@@ -71,7 +59,7 @@ const getProductsController = async () => {
 
 const getProductController = async (id) => {
   try {
-    const product = await findProduct(id);
+    const product = await FactoryPersistence.connection.findProduct(id);
     return product;
   } catch (error) {
     logger.log(
@@ -83,7 +71,7 @@ const getProductController = async (id) => {
 
 const putProductController = async (updateProduct, id) => {
   try {
-    const updateStatus = await putProduct(updateProduct, id);
+    const updateStatus = await FactoryPersistence.connection.putProduct(updateProduct, id);
 
     if (updateStatus?.ok === 1) {
       const product = await getProductController(id);
@@ -101,7 +89,7 @@ const putProductController = async (updateProduct, id) => {
 
 const removeProductController = async (id) => {
   try {
-    return removeProduct(id);
+    return FactoryPersistence.connection.removeProduct(id);
   } catch (error) {
     logger.log(
       "error",
@@ -112,7 +100,7 @@ const removeProductController = async (id) => {
 
 const insertProductController = async (newProduct) => {
   try {
-    return await insertProduct({
+    return await FactoryPersistence.connection.insertProduct({
       title: newProduct.title,
       price: newProduct.price,
       thumbnail: newProduct.thumbnail,

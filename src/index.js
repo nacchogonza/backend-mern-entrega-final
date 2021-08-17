@@ -1,13 +1,13 @@
 import express from "express";
 import cluster from "cluster";
 import os from "os";
+import mongoose from "mongoose";
 
 import { routerApi } from "./routes/RouterApi.js";
 import { routerPassport } from "./routes/routerPassport.js";
 
 import { Server as HttpServer } from "http";
 import { Server as IOServer } from "socket.io";
-import { connectDB } from "./db/mongoDB.js";
 
 import { sendSms, getWordPosition } from "./controller/senderFunctions.js";
 
@@ -38,6 +38,18 @@ let server;
 const numCPUs = os.cpus().length;
 const PORT = process.env.PORT || 8080;
 
+const connectSesionDB = (url) => {
+  try {
+    mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    logger.log("info", "Base de datos conectada para sesion!");
+  } catch (error) {
+    logger.log("error", `Error al conectar a la base de datos: ${error}`);
+  }
+};
+
 // CLUSTER
 if (MODE == "CLUSTER" && cluster.isMaster) {
   logger.log("warn", `Numero de CPUs: ${numCPUs}`);
@@ -57,11 +69,9 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     cluster.fork();
   });
 } else {
-  //const usuarios = [];
 
   const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
-  const URL =
-    "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
+  const URL = "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
 
   const app = express();
   const httpServer = new HttpServer(app);
@@ -71,9 +81,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     logger.log("warn", `Servidor cerrado con código: ${code}`);
   });
 
-  /* CONEXION A DB MONGO */
-  connectDB();
-
+  connectSesionDB(URL);
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
@@ -96,8 +104,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   app.use(passport.initialize());
   app.use(passport.session());
 
-  app.set("view engine", "ejs", );
-  app.set("views", "src/views")
+  app.set("view engine", "ejs");
+  app.set("views", "src/views");
 
   app.use("/api", routerApi);
   app.use("/", routerPassport);
@@ -131,40 +139,30 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     return dataGetProduct;
   };
 
-  const insertProduct = async ({title, price, thumbnail}) => {
-    
-    /* MUTATION EXAMPLE */
-    /* 
-      mutation InsertProduct($title: String, $thumbnail: String, $price: Float) {
-        insertProduct(title: $title, thumbnail: $thumbnail, price: $price){
-          title
-          thumbnail
-          price
-        }
-      }
-    */
-
+  const insertProduct = async ({ title, price, thumbnail }) => {
     const dataInsertProduct = await insertProductController({
       title,
       price,
-      thumbnail
+      thumbnail,
     });
     return dataInsertProduct;
   };
 
-
   const root = {
     product: getProduct,
     products: getProducts,
-    insertProduct: insertProduct
+    insertProduct: insertProduct,
   };
   /*  GRAPHQL */
 
-  app.use("/graphql", graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-  }));
+  app.use(
+    "/graphql",
+    graphqlHTTP({
+      schema: schema,
+      rootValue: root,
+      graphiql: true,
+    })
+  );
 
   io.on("connection", async (socket) => {
     logger.log("info", "Nuevo cliente conectado!");

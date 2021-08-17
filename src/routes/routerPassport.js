@@ -24,8 +24,8 @@ passport.use(
   "login",
   new FacebookStrategy(
     {
-      clientID: process.argv[2] || FACEBOOK_CLIENT_ID,
-      clientSecret: process.argv[3] || FACEBOOK_CLIENT_SECRET,
+      clientID: FACEBOOK_CLIENT_ID,
+      clientSecret: FACEBOOK_CLIENT_SECRET,
       callbackURL: "http://localhost:8080/auth/facebook/callback",
       profileFields: ["id", "displayName", "photos", "emails"],
       scope: ["email"],
