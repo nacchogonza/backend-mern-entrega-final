@@ -25,10 +25,17 @@ import {
   instertMessageController,
 } from "./controller/controllers.js";
 
+
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 
 import FactoryPersistence from './persistence/factory/dbFactory.js';
+
+// import { MessagesRepository } from './persistence/repositories/MessagesRepository.ts';
+// import { Message } from './persistence/repositories/entities/Message.ts';
+
+const db = FactoryPersistence;
+console.log(db);
 
 const MODE = process.argv[5] || "FORK";
 
