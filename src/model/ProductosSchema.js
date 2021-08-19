@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import Config from '../db/config.js'
 
 const productosSchema = new mongoose.Schema({
   title: {
@@ -17,4 +18,6 @@ const productosSchema = new mongoose.Schema({
   },
 });
 
-export { productosSchema };
+const ProductoModel = mongoose.model(Config.db.collection,productosSchema)
+
+export { ProductoModel, productosSchema };

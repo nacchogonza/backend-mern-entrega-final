@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { mensajesSchema } from "../model/MensajesSchema.js";
-import { productosSchema } from "../model/ProductosSchema.js";
+import { ProductoModel, productosSchema } from "../model/ProductosSchema.js";
 import { logger } from "../controller/logger.js";
 
 const DaoMensajes = mongoose.model("mensajes", mensajesSchema);

@@ -1,14 +1,12 @@
-import { SingletonFileSystem } from '../db/SingletonFileSystem.js';
-import { SingletonMemory } from '../db/SingletonMemory.js';
-import { SingletonMongo } from '../db/SingletonMongo.js';
+import { Singleton } from '../db/Singleton.js';
 
 class FactoryPersistence {
   static set(opcion) {
     console.log(`*** PERSISTENCIA SELECCIONADA: [${opcion}] ***`)
     switch (opcion) {
-      case 'Mongo': return new SingletonMongo();
-      case 'Mem': return new SingletonMemory();
-      case 'FS': return new SingletonFileSystem();
+      case 'Mongo': return new Singleton('Mongo');
+      case 'Mem': return new Singleton('Mem');
+      case 'FS': return new Singleton('FS');
     }
   }
 }

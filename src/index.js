@@ -31,6 +31,8 @@ import {
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 
+import FactoryPersistence from './factory/dbFactory.js';
+
 const MODE = process.argv[5] || "FORK";
 
 let server;
@@ -81,7 +83,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     logger.log("warn", `Servidor cerrado con código: ${code}`);
   });
 
-  connectSesionDB(URL);
+  // connectSesionDB(URL);
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
@@ -130,17 +132,17 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
 `);
 
   const getProducts = async () => {
-    const dataGetProducts = await getProductsController();
+    const dataGetProducts = await FactoryPersistence.connection.buscar();
     return dataGetProducts;
   };
 
   const getProduct = async (id) => {
-    const dataGetProduct = await getProductController(id);
+    const dataGetProduct = await FactoryPersistence.connection.buscar();
     return dataGetProduct;
   };
 
   const insertProduct = async ({ title, price, thumbnail }) => {
-    const dataInsertProduct = await insertProductController({
+    const dataInsertProduct = await FactoryPersistence.connection.agregar({
       title,
       price,
       thumbnail,
@@ -167,13 +169,13 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
   io.on("connection", async (socket) => {
     logger.log("info", "Nuevo cliente conectado!");
 
-    socket.emit("productos", await getProductsController());
+    socket.emit("productos", await FactoryPersistence.connection.buscar());
 
     socket.emit("messages", await getMessagesController());
 
     socket.on("new-product", async (product) => {
-      await insertProductController(product);
-      socket.emit("productos", await getProductsController());
+      await FactoryPersistence.connection.agregar(product);
+      socket.emit("productos", await FactoryPersistence.connection.buscar());
     });
 
     socket.on("new-message", async (data) => {

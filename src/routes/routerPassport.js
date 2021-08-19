@@ -9,7 +9,7 @@ import {
   sendGmailEmail,
 } from "../controller/senderFunctions.js";
 
-import { getProductsController } from "../controller/controllers.js";
+import FactoryPersistence from '../factory/dbFactory.js';
 
 const routerPassport = express.Router();
 routerPassport.use(express.json());
@@ -105,7 +105,7 @@ routerPassport.get("/faillogin", (req, res) => {
 });
 
 routerPassport.get("/home", isAuth, async (req, res) => {
-  const data = await getProductsController();
+  const data = await FactoryPersistence.connection.buscar();
   res.render("pages/products", {
     products: data,
     user: req.session.passport.user,

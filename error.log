@@ -281,3 +281,22 @@
 {"level":"error","message":"Error al agregando nuevo producto en controller: TypeError: logger is not a function"}
 {"level":"error"}
 {"level":"error"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: FactoryPersistence.connection.findMessages is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: FactoryPersistence.connection.findMessages is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: FactoryPersistence.connection.findMessages is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: FactoryPersistence.connection.findMessages is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: FactoryPersistence.connection.findMessages is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: FactoryPersistence.connection.findProducts is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: Error: TypeError: productosSchema.find is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: Error: TypeError: productosSchema.find is not a function"}
+{"level":"error","message":"Error al obtener mensajes del controller: Error: TypeError: productosSchema.find is not a function"}
+{"level":"error","message":"Error al obtener productos en controller: TypeError: Cannot read property 'getAll' of undefined"}
+{"level":"error","message":"Error al obtener mensajes del controller: TypeError: Cannot read property 'getAll' of undefined"}

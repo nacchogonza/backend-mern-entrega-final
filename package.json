@@ -1,8 +1,8 @@
 {
   "type": "module",
-  "name": "entregable-39",
+  "name": "entregable-41",
   "version": "1.0.0",
-  "description": "Entregable para la clase 39",
+  "description": "Entregable para la clase 41",
   "main": "./src/index.js",
   "scripts": {
     "start": "node ./src/index.js",

@@ -14,9 +14,10 @@ const messages = new schema.Entity(
   { idAttribute: "id" }
 );
 
+
 const getMessagesController = async () => {
   try {
-    const data = await FactoryPersistence.connection.findMessages();
+    const data = await FactoryPersistence.connection.buscar();
     const dataJson = JSON.parse(JSON.stringify(data));
     /* normalizador */
     const normalizedData = normalize(dataJson, [messages]);
@@ -49,7 +50,7 @@ const instertMessageController = async (newMessage) => {
 
 const getProductsController = async () => {
   try {
-    const products = await FactoryPersistence.connection.findProducts();
+    const products = await FactoryPersistence.connection.buscar();
     return products;
   } catch (error) {
     logger.log("error", `Error al obtener productos en controller: ${error}`);
@@ -58,7 +59,7 @@ const getProductsController = async () => {
 
 const getProductController = async (id) => {
   try {
-    const product = await FactoryPersistence.connection.findProduct(id);
+    const product = await FactoryPersistence.connection.buscar(id);
     return product;
   } catch (error) {
     logger.log(
@@ -70,7 +71,7 @@ const getProductController = async (id) => {
 
 const putProductController = async (updateProduct, id) => {
   try {
-    const updateStatus = await FactoryPersistence.connection.putProduct(updateProduct, id);
+    const updateStatus = await FactoryPersistence.connection.reemplazar(updateProduct, id);
 
     if (updateStatus?.ok === 1) {
       const product = await getProductController(id);
@@ -88,7 +89,7 @@ const putProductController = async (updateProduct, id) => {
 
 const removeProductController = async (id) => {
   try {
-    return FactoryPersistence.connection.removeProduct(id);
+    return FactoryPersistence.connection.borrar(id);
   } catch (error) {
     logger.log(
       "error",
@@ -99,7 +100,7 @@ const removeProductController = async (id) => {
 
 const insertProductController = async (newProduct) => {
   try {
-    return await FactoryPersistence.connection.insertProduct({
+    return await FactoryPersistence.connection.agregar({
       title: newProduct.title,
       price: newProduct.price,
       thumbnail: newProduct.thumbnail,

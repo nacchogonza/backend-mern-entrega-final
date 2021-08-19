@@ -1,19 +1,13 @@
 import express from "express";
 
-import {
-  getProductController,
-  getProductsController,
-  insertProductController,
-  putProductController,
-  removeProductController,
-} from "../controller/controllers.js";
+import FactoryPersistence from '../factory/dbFactory.js';
 
 const routerApi = express.Router();
 routerApi.use(express.json());
 routerApi.use(express.urlencoded({ extended: true }));
 
 routerApi.get("/productos", async (req, res) => {
-  const data = await getProductsController();
+  const data = await FactoryPersistence.connection.buscar();
   if (!data.length) {
     res.status(404).json({ error: "no hay productos cargados" });
     return
@@ -24,7 +18,7 @@ routerApi.get("/productos", async (req, res) => {
 routerApi.post("/productos", async (req, res) => {
   const data = req.body;
   data.price = parseFloat(data.price);
-  const newProduct = await insertProductController({
+  const newProduct = await FactoryPersistence.connection.agregar({
     title: data.title,
     price: data.price,
     thumbnail: data.thumbnail,
@@ -37,7 +31,7 @@ routerApi.post("/productos", async (req, res) => {
 });
 
 routerApi.get("/productos/:id", async (req, res) => {
-  const filterProduct = await getProductController(req.params.id);
+  const filterProduct = await FactoryPersistence.connection.buscar(req.params.id);
   if (!filterProduct) {
     res.status(404).json({ error: "producto no encontrado" });
     return
@@ -49,13 +43,13 @@ routerApi.put("/productos/:id", async (req, res) => {
   const data = req.body;
   console.log(data)
   data.price = parseFloat(data.price);
-  const updateProduct = await putProductController(
+  const updateProduct = await FactoryPersistence.connection.reemplazar(
+    req.params.id,
     {
       title: data.title,
       price: data.price,
       thumbnail: data.thumbnail,
-    },
-    req.params.id
+    }
   );
   if (!updateProduct) {
     res.status(404).json({ error: "producto no encontrado" });
@@ -65,7 +59,7 @@ routerApi.put("/productos/:id", async (req, res) => {
 });
 
 routerApi.delete("/productos/:id", async (req, res) => {
-  const deleteProduct = await removeProductController(req.params.id);
+  const deleteProduct = await FactoryPersistence.connection.borrar(req.params.id);
   if (!deleteProduct) {
     res.status(404).json({ error: "producto no encontrado" });
     return;
