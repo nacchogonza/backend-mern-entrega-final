@@ -318,3 +318,7 @@
 {"level":"error","message":"Error al obtener productos en controller: TypeError: Cannot read property 'getAll' of undefined"}
 {"level":"error","message":"Error al obtener mensajes del controller: TypeError: Cannot read property 'getAll' of undefined"}
 {"level":"warn","message":"Servidor cerrado con código: 1"}
+{"level":"warn","message":"Servidor cerrado con código: 1"}
+{"level":"error","message":"Error al obtener mensajes del controller: SyntaxError: Unexpected token u in JSON at position 0"}
+{"level":"warn","message":"Servidor cerrado con código: 1"}
+{"level":"warn","message":"Servidor cerrado con código: 1"}

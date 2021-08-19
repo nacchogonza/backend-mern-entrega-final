@@ -2,7 +2,7 @@ import normalizr from "normalizr";
 const normalize = normalizr.normalize;
 const { schema } = normalizr;
 import { logger } from "./logger.js";
-import FactoryPersistence from '../factory/dbFactory.js';
+import FactoryPersistence from '../persistence/factory/dbFactory.js';
 
 const schemaAuthor = new schema.Entity("author", {}, { idAttribute: "email" });
 

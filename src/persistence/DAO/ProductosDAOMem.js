@@ -29,7 +29,7 @@ class ProductosDaoMem extends ProductosDao {
             throw new Error(err)
         }
 
-        return [buscado]
+        return buscado
     }
 
     async add(prodNuevo) {

@@ -22,16 +22,13 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import {
   getMessagesController,
-  getProductController,
-  getProductsController,
-  insertProductController,
   instertMessageController,
 } from "./controller/controllers.js";
 
 import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 
-import FactoryPersistence from './factory/dbFactory.js';
+import FactoryPersistence from './persistence/factory/dbFactory.js';
 
 const MODE = process.argv[5] || "FORK";
 

@@ -33,14 +33,13 @@ class ProductosDaoDb extends ProductosDao {
             throw new Error(err)
         }
 
-        return [buscado]
+        return buscado
     }
 
     async add(prodNuevo) {
-        let result
         try {
             const productoAdd = new ProductoModel(prodNuevo)
-            result = await productoAdd.save()
+            await productoAdd.save()
         } catch (error) {
             throw new Error(err)
         }

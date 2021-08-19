@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Config from '../db/config.js'
+import Config from '../persistence/config.js'
 
 const productosSchema = new mongoose.Schema({
   title: {

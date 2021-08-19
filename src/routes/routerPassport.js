@@ -9,7 +9,7 @@ import {
   sendGmailEmail,
 } from "../controller/senderFunctions.js";
 
-import FactoryPersistence from '../factory/dbFactory.js';
+import FactoryPersistence from '../persistence/factory/dbFactory.js';
 
 const routerPassport = express.Router();
 routerPassport.use(express.json());

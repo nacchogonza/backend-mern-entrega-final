@@ -1,6 +1,6 @@
 import express from "express";
 
-import FactoryPersistence from '../factory/dbFactory.js';
+import FactoryPersistence from '../persistence/factory/dbFactory.js';
 
 const routerApi = express.Router();
 routerApi.use(express.json());
@@ -41,7 +41,6 @@ routerApi.get("/productos/:id", async (req, res) => {
 
 routerApi.put("/productos/:id", async (req, res) => {
   const data = req.body;
-  console.log(data)
   data.price = parseFloat(data.price);
   const updateProduct = await FactoryPersistence.connection.reemplazar(
     req.params.id,
