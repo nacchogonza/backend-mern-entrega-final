@@ -1,3 +1,4 @@
+import Config from '../persistence/config.js'
 import mongoose from "mongoose";
 
 const mensajesSchema = new mongoose.Schema({
@@ -45,4 +46,6 @@ const mensajesSchema = new mongoose.Schema({
   },
 });
 
-export { mensajesSchema };
+const MensajeModel = mongoose.model(Config.db.collectionMensajes,mensajesSchema)
+
+export { MensajeModel, mensajesSchema };

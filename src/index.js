@@ -30,12 +30,7 @@ import { graphqlHTTP } from "express-graphql";
 import { buildSchema } from "graphql";
 
 import FactoryPersistence from './persistence/factory/dbFactory.js';
-
-// import { MessagesRepository } from './persistence/repositories/MessagesRepository.ts';
-// import { Message } from './persistence/repositories/entities/Message.ts';
-
-const db = FactoryPersistence;
-console.log(db);
+import FactoryRepository from './persistence/factory/repositoryFactory.js';
 
 const MODE = process.argv[5] || "FORK";
 
@@ -43,18 +38,6 @@ let server;
 
 const numCPUs = os.cpus().length;
 const PORT = process.env.PORT || 8080;
-
-const connectSesionDB = (url) => {
-  try {
-    mongoose.connect(url, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    logger.log("info", "Base de datos conectada para sesion!");
-  } catch (error) {
-    logger.log("error", `Error al conectar a la base de datos: ${error}`);
-  }
-};
 
 // CLUSTER
 if (MODE == "CLUSTER" && cluster.isMaster) {
@@ -175,7 +158,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
 
     socket.emit("productos", await FactoryPersistence.connection.buscar());
 
-    socket.emit("messages", await getMessagesController());
+    socket.emit("messages", await FactoryRepository.getAllMessages());
 
     socket.on("new-product", async (product) => {
       await FactoryPersistence.connection.agregar(product);
@@ -186,8 +169,8 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
       if (getWordPosition("administrador", data.text) !== -1) {
         await sendSms(data);
       }
-      await instertMessageController(data);
-      socket.emit("messages", await getMessagesController());
+      await FactoryRepository.insertMessage(data);
+      socket.emit("messages", await FactoryRepository.getAllMessages());
     });
   });
 
