@@ -5,8 +5,10 @@
   "description": "Entregable para la clase 42",
   "main": "./src/index.js",
   "scripts": {
+    "dev": "NODE_ENV=development&& node ./src/index.js --PORT=8082",
+    "prod": "NODE_ENV=production&& node ./src/index.js --PORT=8082",
     "start": "node ./src/index.js",
-    "prod": "forever start ./src/index.js",
+    "prod-forever": "forever start ./src/index.js",
     "autocannon": "node ./src/benchmark.js",
     "test": "0x ./src/index.js",
     "test-mocha": "mocha ./test/api.test.js"
@@ -21,6 +23,7 @@
     "compression": "^1.7.4",
     "connect-mongo": "^4.4.1",
     "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "express-graphql": "^0.12.0",
@@ -30,6 +33,7 @@
     "forever": "^4.0.1",
     "graphql": "^15.5.1",
     "knex": "^0.95.6",
+    "minimist": "^1.2.5",
     "mongodb": "^3.6.8",
     "mongoose": "^5.12.12",
     "mysql": "^2.18.1",

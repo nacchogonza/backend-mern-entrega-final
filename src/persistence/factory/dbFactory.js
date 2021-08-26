@@ -1,3 +1,4 @@
+import config from '../../../config.js'
 import { Singleton } from '../Singleton.js';
 
 class FactoryPersistence {
@@ -11,5 +12,5 @@ class FactoryPersistence {
   }
 }
 
-const opcion = process.argv[2] || "Mongo";
+const opcion = config.PERSISTENCE;
 export default FactoryPersistence.set(opcion);

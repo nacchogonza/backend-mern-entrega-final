@@ -1,3 +1,4 @@
+import config from '../../../config.js'
 import { MensajeModel } from '../../model/MensajesSchema.js';
 import { MessagesRepositoryFS } from '../repositories/MessagesRepositoryFS.js';
 import { MessagesRepositoryMem } from '../repositories/MessagesRepositoryMem.js';
@@ -15,5 +16,5 @@ class FactoryRepository {
   }
 }
 
-const opcion = process.argv[2] || "Mongo";
+const opcion = config.PERSISTENCE;
 export default FactoryRepository.set(opcion);

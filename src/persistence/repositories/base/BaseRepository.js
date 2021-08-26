@@ -1,7 +1,6 @@
 export class BaseRepository {
 
   constructor(collection) {
-    console.log('COLECTION: ', collection)
     this._collection = collection;
   }
 
