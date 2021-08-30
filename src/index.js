@@ -1,4 +1,4 @@
-import minimist from 'minimist';
+import config from '../config.js'
 import express from "express";
 import cluster from "cluster";
 import os from "os";
@@ -58,12 +58,6 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     cluster.fork();
   });
 } else {
-
-  let args = minimist(process.argv.slice(2), {
-    default: {
-      PORT: 8080
-    }
-  })
 
   const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
   const URL = "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
@@ -180,7 +174,7 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     });
   });
 
-  server = httpServer.listen(args.PORT, () => {
+  server = httpServer.listen(config.PORT, () => {
     logger.log("info", `servidor inicializado en ${server.address().port}`);
   });
 
