@@ -1,10 +1,7 @@
-/* traer valores de db del archivo de config */
-import config from "../../config.js";
+
 import MensajesDBMongoDAO from "../model/DAOs/mensajes/mensajesDBMongo.js";
 import Mensajes from "../model/models/mensajes.js";
 
-/* implementar modelo de mensajes */
-import Productos from "../model/models/productos.js";
 
 class ApiMensajes {
   constructor() {
@@ -13,6 +10,10 @@ class ApiMensajes {
 
   async getMessages(id) {
     return await this.mensajesDao.getMessages(id);
+  }
+
+  async getUserMessages(useremail) {
+    return await this.mensajesDao.getUserMessages(useremail);
   }
 
   async postMessage(message) {

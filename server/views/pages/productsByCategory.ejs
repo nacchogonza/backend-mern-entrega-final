@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <title>Aplicacion de carga de Productos</title>
+  </head>
+  <body class="container">
+    <div class="bg-white">
+      <header class="text-center">
+        <h1 class="text-primary font-weight-bold">
+          Aplicacion de Carga de Productos
+        </h1>
+      </header>
+
+      <div style="padding: 20px">
+        <div class="text-center">
+          <p>Bienvenidx <%= username %> !</p>
+          <p>Email: <%= useremail %></p>
+          <p>Telefono: <%= userphone %></p>
+          <p>Direccion: <%= useraddress %></p>
+          <p><%= category %></p>
+          <br /><br />
+        </div>
+
+        <br />
+
+        <h3>Listado de Productos</h3>
+        <hr />
+        <div class="row pt-5" id="tablaDeProductos"></div>
+        <br />
+      </div>
+
+      <footer class="text-center" style="padding-top: 10px">
+        <p>Backend MERN - Entregable Final</p>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<script>
+  const category = "<%= category %>";
+  const dataProductos = fetch(`/api/productos/categoria/${category}`)
+    .then((res) => res.json())
+    .then((products) => {
+      if (!products.length) {
+        htmlNoProducts = `
+      <div style="overflow: hidden; box-sizing: border-box; text-align: center;">
+        <div class="bg-warning" style="padding: 5px; text-align: center;">
+          <h3>No se encontraron productos para la categoria ${category}</h1>
+        </div>
+      </div>
+      `;
+        document.getElementById("tablaDeProductos").innerHTML = htmlNoProducts;
+        return;
+      }
+      let htmlCode = products
+        .map(
+          (product) =>
+            `
+          <div class="col-md-4 pb-5">
+          <div class="card" style="width: 15rem;">
+            <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${product.thumbnail}" alt="Card image cap">
+            <div class="card-body">
+              <h5 class="card-title">${product.title}</h5>
+              <p><b>Descripción:</b> ${product.description}</p>
+              <p><b>Precio:</b> ${product.price}</p>
+              <p><b>Code:</b> ${product.categoria}</p>
+              <form action="/api/carritos" method="post">
+                <input type="hidden" id="_id" name="_id" value="${product._id}" >
+                <input type="hidden" id="title" name="title" value="${product.title}" >
+                <input type="hidden" id="price" name="price" value="${product.price}" >
+                <input type="hidden" id="description" name="description" value="${product.description}" >
+                <input type="hidden" id="categoria" name="categoria" value="${product.categoria}" >
+                <input type="hidden" id="thumbnail" name="thumbnail" value="${product.thumbnail}" >
+                <input type="hidden" id="isBrowser" name="isBrowser" value="true" >
+                <input class="btn btn-primary my-2" type="submit" value="Agregar al Carrito">
+              </form>
+            </div>
+          </div>
+        </div>
+      `
+        )
+        .join(" ");
+      document.getElementById("tablaDeProductos").innerHTML = htmlCode;
+    })
+    .catch(console.error);
+</script>

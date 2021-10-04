@@ -21,9 +21,21 @@ class RouterUsuarios {
         useraddress: req.user.useraddress,
       })
     })
+
+    router.get('/productos/:categoria',  verifyJWT, (req, res) => {
+      const category = req.params.categoria
+      res.render('productsByCategory.ejs', {
+        username: req.user.username,
+        useremail: req.user.useremail,
+        userphone: req.user.userphone,
+        useraddress: req.user.useraddress,
+        category
+      })
+    })
     router.get('/chat', verifyJWT, (req, res) => {
       res.render('chat.ejs')
     })
+
     router.get('/loginPage', (req, res) => {
       res.render("login.ejs");
     })

@@ -1,24 +1,5 @@
 const socket = io.connect();
 
-const addToCart = async (product) => {
-  product.isBrowser = true
-  console.log(product)
-  const url = `/api/carrito`;
-  /* await fetch(url, {
-    method: "POST",
-    body: {
-      product,
-    },
-  })
-    .then((res) => {
-      return res.json();
-    })
-    .then((json) => {
-      console.log("producto agregado al carrito: ", json);
-      // location.href = '/carrito.html'
-    }); */
-};
-
 const dataProductos = fetch("/api/productos")
   .then((res) => res.json())
   .then((products) => {
@@ -73,8 +54,6 @@ const addProduct = async () => {
     categoria: document.getElementById("categoria").value,
     description: document.getElementById("description").value,
   };
-
-  console.log(producto);
 
   await fetch(`/api/productos`, {
     method: "POST",
