@@ -1,0 +1,21 @@
+<%- include('../partials/top') %>
+
+<div class="container-fluid mt-3">
+  <h1>App de Productos - Chat</h1>
+  <div id="compressionDiv"></div>
+
+  <di id="messages"></div>
+  <br>
+
+  <form onsubmit="return addMessage(this)" autocomplete="off">
+    <div class="form-group">
+      <input type="text" id="userEmail" class="form-control my-2 mr-2" placeholder="Tu Email">
+    </div>
+    <div class="form-group">
+      <input type="text" id="texto" class="form-control my-2 mr-2" placeholder="Cuéntanos algo...">
+    </div>
+    <input class="btn btn-primary my-2" type="submit" value="Enviar!">
+  </form>
+</div>
+
+<%- include('../partials/bottom') %>

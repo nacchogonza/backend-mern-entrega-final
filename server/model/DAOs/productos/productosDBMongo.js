@@ -1,37 +1,33 @@
-// import noticiaDTO from '../DTOs/noticias.js'
-import ProductosBaseDAO from "./ProductosBaseDAO.js";
-import productoDTO from "../DTOs/productos.js";
 
 import mongodb from "mongodb";
+import config from "../../../../config.js";
 const { MongoClient, ObjectId } = mongodb;
 
-const URL =
-  "mongodb+srv://root:root@cluster0.j4zse.mongodb.net/ecommerce2?retryWrites=true&w=majority";
-
-class ProductosDBMongoDAO extends ProductosBaseDAO {
+class ProductosDBMongoDAO {
   constructor(database, collection) {
-    super();
     (async () => {
-      console.log("Contectando a la Base de datos...");
+      console.log("Conectando a DB, coleccion Productos");
 
-      const connection = await MongoClient.connect(URL, {
+      const connection = await MongoClient.connect(config.DB_URL, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       });
       const db = connection.db(database);
-      this._collection = db.collection(collection);
+      this.productosCollection = db.collection(collection);
       /* ---------------------------------------------------------------- */
-      console.log("Base de datos conectada!");
+      console.log("Base de datos conectada, coleccion productos");
     })();
   }
 
   obtenerProductos = async (_id) => {
     try {
       if (_id) {
-        const producto = await this._collection.findOne({ _id: ObjectId(_id) });
+        const producto = await this.productosCollection.findOne({
+          _id: ObjectId(_id),
+        });
         return [producto];
       } else {
-        const productos = await this._collection.find({}).toArray();
+        const productos = await this.productosCollection.find({}).toArray();
         return productos;
       }
     } catch (error) {
@@ -39,9 +35,20 @@ class ProductosDBMongoDAO extends ProductosBaseDAO {
     }
   };
 
+  obtenerProductosPorCategoria = async (categoria) => {
+    try {
+      const productos = await this.productosCollection
+        .find({ categoria: categoria })
+        .toArray();
+      return productos;
+    } catch (error) {
+      console.log("obtenerProductos error", error);
+    }
+  };
+
   guardarProducto = async (producto) => {
     try {
-      await this._collection.insertOne(producto);
+      await this.productosCollection.insertOne(producto);
       return producto;
     } catch (error) {
       console.log("guardarProducto error", error);
@@ -51,7 +58,7 @@ class ProductosDBMongoDAO extends ProductosBaseDAO {
 
   actualizarProducto = async (_id, producto) => {
     try {
-      await this._collection.updateOne(
+      await this.productosCollection.updateOne(
         { _id: ObjectId(_id) },
         { $set: producto }
       );
@@ -63,9 +70,9 @@ class ProductosDBMongoDAO extends ProductosBaseDAO {
   };
 
   eliminarProducto = async (_id) => {
-    let productoEliminado = productoDTO({}, _id, null);
+    let productoEliminado = { _id };
     try {
-      await this._collection.deleteOne({ _id: ObjectId(_id) });
+      await this.productosCollection.deleteOne({ _id: ObjectId(_id) });
       return productoEliminado;
     } catch (error) {
       console.log("eliminarProducto error", error);

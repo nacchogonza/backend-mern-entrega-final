@@ -9,8 +9,9 @@ class RouterProductos {
   }
 
   start() {
-
+    router.get('/', this.productosController.getProducts)
     router.get('/:id?', this.productosController.getProducts)
+    router.get('/categoria/:categoria', this.productosController.getProductsByCategory)
     router.post('/', this.productosController.insertProduct)
     router.put('/:id', this.productosController.updateProduct)
     router.delete('/:id', this.productosController.removeProduct)

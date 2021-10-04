@@ -5,13 +5,14 @@
   <!-- <form action="/api/productos" method="post"> -->
   <form class="form" action="/login" method="post" role="form" autocomplete="off">
     <div class="form-group">
-      <label for="username" class="font-italic">Usuario</label>
-      <input type="text" class="form-control" name="username" id="username" placeholder="Usuario">
+      <label for="useremail" class="font-italic">Usuario</label>
+      <input type="text" class="form-control" name="useremail" id="useremail" placeholder="Usuario">
     </div>
     <div class="form-group">
       <label for="password">Contraseña</label>
       <input type="password" class="form-control" name="password" id="password" placeholder="Password">
     </div>
+    <input type="hidden" name="isBrowser" value="true" />
     <button type="submit" class="btn btn-primary">INICIAR SESION</button>
   </form>
   <br>

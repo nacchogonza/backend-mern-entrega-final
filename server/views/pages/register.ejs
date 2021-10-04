@@ -1,0 +1,33 @@
+<%- include('../partials/topLogin') %>
+
+
+<div style="padding: 20px;">
+  <!-- <form action="/api/productos" method="post"> -->
+  <form class="form" action="/register" method="post" role="form" autocomplete="off">
+    <div class="form-group">
+      <label for="username" class="font-italic">Nombre Completo</label>
+      <input type="text" class="form-control" name="username" id="username" placeholder="Nombre Completo">
+    </div>
+    <div class="form-group">
+      <label for="useremail" class="font-italic">Email Usuario</label>
+      <input type="email" class="form-control" name="useremail" id="useremail" placeholder="Email">
+    </div>
+    <div class="form-group">
+      <label for="userphone" class="font-italic">Teléfono Usuario</label>
+      <input type="tel" class="form-control" name="userphone" id="userphone" placeholder="Teléfono">
+    </div>
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input type="password" class="form-control" name="password" id="password" placeholder="Contraseña">
+    </div>
+    <div class="form-group">
+      <label for="passwordRepeat">Confirmar Contraseña</label>
+      <input type="password" class="form-control" name="passwordRepeat" id="passwordRepeat" placeholder="Confirmar Contraseña">
+    </div>
+    <input type="hidden" name="isBrowser" value="true" />
+    <button type="submit" class="btn btn-primary">Registrar Usuario</button>
+  </form>
+  <br>
+</div>
+
+<%- include('../partials/bottom') %>

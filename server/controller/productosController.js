@@ -15,10 +15,36 @@ class ProductosController {
     }
   };
 
+  getProductsByCategory = async (req, res) => {
+    try {
+      const categoria = req.params.categoria;
+      const productos = await this.apiProductos.getProductosPorCategoria(
+        categoria
+      );
+      res.send(productos);
+    } catch (error) {
+      console.log("error getProducts controller: ", error);
+    }
+  };
+
   insertProduct = async (req, res) => {
     try {
       let producto = req.body;
-      let productoGuardado = await this.apiProductos.postProducto(producto);
+      let productoGuardado = await this.apiProductos.postProducto({
+        title: producto.title,
+        price: Number(producto.price),
+        description: producto.description,
+        categoria: producto.categoria,
+        thumbnail: producto.thumbnail
+      });
+      if (producto.isBrowser) {
+        res.status(200).redirect('/productos')
+        return;
+      }
+      if (!productoGuardado) {
+        res.status(500).json({ error: "error al insertar producto" });
+        return;
+      }
       res.json(productoGuardado);
     } catch (error) {
       console.log("error postProduct: ", error);

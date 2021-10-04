@@ -1,24 +1,33 @@
-import config from '../config.js'
+import config from "../config.js";
 import express from "express";
 import cluster from "cluster";
 import os from "os";
+import hbs from 'express-handlebars'
+
+import MongoStore from "connect-mongo";
+import session from "express-session";
 
 import { Server as HttpServer } from "http";
+import { Server as IOServer } from "socket.io";
 
 import { logger } from "./logger.js";
 
-import { graphqlHTTP } from "express-graphql";
+import RouterProductos from "./routes/productosRouter.js";
+import RouterMensajes from "./routes/mensajesRouter.js";
+import RouterUsuarios from "./routes/usuariosRouter.js";
 
-import { buildSchema } from "graphql";
-
-import RouterProductos from './routes/productosRouter.js'
-
+import { verifyJWT } from "./utils/functions.js";
+import RouterCarritos from "./routes/carritosRouter.js";
+import RouterOrdenes from "./routes/ordenesRouter.js";
 
 const MODE = config.MODE;
 
 let server;
 
 const numCPUs = os.cpus().length;
+
+const advancedOptions = { useNewUrlParser: true, useUnifiedTopology: true };
+const URL = config.DB_URL;
 
 // CLUSTER
 if (MODE == "CLUSTER" && cluster.isMaster) {
@@ -39,72 +48,100 @@ if (MODE == "CLUSTER" && cluster.isMaster) {
     cluster.fork();
   });
 } else {
-
   const app = express();
   const httpServer = new HttpServer(app);
+  const io = new IOServer(httpServer);
+
+  process.on("uncaughtException", (err) => {
+    console.log(`Excepcion recogida: ${err}`);
+  });
 
   process.on("exit", (code) => {
-    logger.log("warn", `Servidor cerrado con código: ${code}`);
+    console.log(`Servidor cerrado con código: ${code}`);
   });
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
-  
-  const routerProductos = new RouterProductos();
-  app.use("/api/productos", routerProductos.start())
+  app.engine('hbs', hbs({
+    extname: '.hbs',
+    layoutsDir: process.cwd() + '/server/views/pages',
+    defaultLayout: 'configs',
+  }));
+  app.set('view engine', 'hbs');
+  app.set("views", process.cwd() + "/server/views/pages");
 
-
-  /*  GRAPHQL */
-  const schema = buildSchema(`
-    type Query {
-      product(_id: String!): Product
-      products: [Product]
-    },
-    type Mutation {
-      insertProduct(title: String, price: Float, thumbnail: String): Product
-    },
-    type Product {
-      _id: String
-      title: String
-      price: Float
-      thumbnail: String
-    }
-`);
-
-  /* const getProducts = async () => {
-    const dataGetProducts = await routerProductos.productosController.getProducts();
-    return dataGetProducts;
-  };
-
-  const getProduct = async (id) => {
-    const dataGetProduct = await FactoryPersistence.connection.buscar();
-    return dataGetProduct;
-  };
-
-  const insertProduct = async ({ title, price, thumbnail }) => {
-    const dataInsertProduct = await FactoryPersistence.connection.agregar({
-      title,
-      price,
-      thumbnail,
-    });
-    return dataInsertProduct;
-  }; */
-
-  /* const root = {
-    product: getProduct,
-    products: getProducts,
-    insertProduct: insertProduct,
-  }; */
-  /*  GRAPHQL */
-
-  /* app.use(
-    "/graphql",
-    graphqlHTTP({
-      schema: schema,
-      rootValue: root,
-      graphiql: true,
+  app.use(
+    session({
+      store: MongoStore.create({
+        mongoUrl: URL,
+        mongoOptions: advancedOptions,
+      }),
+      secret: "shhhhhhhhhhhhhhhhhhhhh",
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        maxAge: Number(config.SESSION_TIME) /* TIEMPO DE SESION: 10 MINUTOS */,
+      },
     })
-  ); */
+  );
+
+  app.use("/", express.static("public"));
+
+  const routerProductos = new RouterProductos();
+  const routerMensajes = new RouterMensajes();
+  const routerUsuarios = new RouterUsuarios();
+  const routerCarritos = new RouterCarritos();
+  const routerOrdenes = new RouterOrdenes();
+
+  app.use("/api/productos", verifyJWT, routerProductos.start());
+  app.use("/api/mensajes", verifyJWT, routerMensajes.start());
+  app.use("/api/carritos", verifyJWT, routerCarritos.start());
+  app.use("/api/ordenes", verifyJWT, routerOrdenes.start());
+  app.use("/", routerUsuarios.start());
+
+  app.get("/info", (req, res) => {
+    res.render("info.pug", {
+      arguments: process.argv,
+      platform: process.platform,
+      nodeVersion: process.version,
+      memoryUssage: process.memoryUsage.rss(),
+      processId: process.pid,
+      workDirectory: process.cwd(),
+      execDirectory: process.argv[0],
+    });
+  });
+  app.get("/configs", (req, res) => {
+    res.render("configs", {
+      port: config.PORT,
+      dbUrl: config.DB_URL,
+      nodeEnv: config.NODE_ENV,
+      execMode: config.MODE,
+      sessionTime: config.SESSION_TIME,
+      adminEmail: config.ADMIN_EMAIL,
+    });
+  });
+
+  io.on("connection", async (socket) => {
+    logger.log("info", "Nuevo cliente conectado al chat");
+
+    if (
+      routerMensajes.mensajesController.apiMensajes.mensajesDao
+        .mensajesCollection
+    ) {
+      socket.emit(
+        "messages",
+        await routerMensajes.mensajesController.apiMensajes.getMessages()
+      );
+    }
+
+    socket.on("new-message", async (data) => {
+      await routerMensajes.mensajesController.apiMensajes.postMessage(data);
+      socket.emit(
+        "messages",
+        await routerMensajes.mensajesController.apiMensajes.getMessages()
+      );
+    });
+  });
 
   server = httpServer.listen(config.PORT, () => {
     logger.log("info", `servidor inicializado en ${server.address().port}`);
