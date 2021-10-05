@@ -44,6 +44,12 @@ class RouterUsuarios {
       });
     });
 
+    router.get("/carrito", verifyJWT, (req, res) => {
+      res.render("carrito.ejs", {
+        useremail: req.user.useremail,
+      });
+    });
+
     router.get("/loginPage", (req, res) => {
       res.render("login.ejs");
     });

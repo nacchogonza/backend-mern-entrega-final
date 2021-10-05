@@ -15,6 +15,26 @@ class CarritosController {
     }
   };
 
+  getCartByUser = async (req, res) => {
+    try {
+      const user = req.user
+      const userEmail = req.params.email;
+      if (user.useremail !== userEmail) {
+        res.status(500).json({
+          error: "el mail solicitado no coincide con el usuario logueado",
+        });
+        return;
+      }
+      const carritos = await this.apiCarritos.getCarts();
+      const userCart = carritos.find(
+        (currentCart) => currentCart.useremail === userEmail
+      );
+      res.status(200).json(userCart);
+    } catch (error) {
+      console.log("error getCartByUser controller: ", error);
+    }
+  };
+
   insertProductCart = async (req, res) => {
     try {
       const user = req.user;

@@ -12,6 +12,7 @@ class RouterCarritos {
 
   start() {
     router.get('/', this.carritosController.getCarts)
+    router.get('/:email', this.carritosController.getCartByUser)
     router.post('/', this.carritosController.insertProductCart)
     router.delete('/', this.carritosController.deleteProductCart)
     router.delete('/:id', this.carritosController.deleteCart)

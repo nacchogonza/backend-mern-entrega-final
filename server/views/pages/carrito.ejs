@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <title>Aplicacion de carga de Productos</title>
+  </head>
+  <body class="container">
+    <div class="bg-light p-5">
+      <header class="text-center">
+        <h1 class="text-primary font-weight-bold">Aplicacion de Productos - Mi Carrito</h1>
+      </header>
+      <div class="row pt-5" id="carrito"></div>
+
+      <div class="text-center pb-2">
+        <button
+          id="buttonAgregar"
+          type="submit"
+          onclick="confirmCart()"
+          class="btn btn-primary"
+        >
+          Confirmar Carrito
+        </button>
+        <a href="/">
+          <button class="btn btn-primary">Volver al Listado</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  console.log("<%= useremail %>");
+
+  
+
+  const dataCarrito = fetch("/api/carritos/<%= useremail %>")
+    .then((res) => res.json())
+    .then((carrito) => {
+      render(carrito);
+    })
+    .catch(console.error);
+
+  function render(data) {
+    console.log(data)
+    const html = data.productos
+      .map((elem, index) => {
+
+          return `<div class="col-md-4 pb-5">
+      <div class="card" style="width: 15rem;">
+        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${elem.product.thumbnail}" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title">${elem.product.title}</h5>
+          <p><b>ID:</b> ${elem.product.id}</p>
+          <p><b>Descripción:</b> ${elem.product.description}</p>
+          <p><b>Precio:</b> ${elem.product.price}</p>
+          <p><b>Code:</b> ${elem.product.code}</p>
+          <p><b>Stock:</b> ${elem.product.stock}</p>
+          <p><b>Cantidad:</b> ${elem.quantity}</p>
+          <div class="text-center pb-2">
+            <button class="btn btn-primary" onclick="deleteProductCart(${elem.product.id})">Eliminar del Carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+      })
+      .join(" ");
+    document.getElementById("carrito").innerHTML = html;
+  }
+</script>
