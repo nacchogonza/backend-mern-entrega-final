@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <title>Aplicacion de carga de Productos</title>
+  </head>
+  <body class="container">
+    <div class="bg-white">
+      <header class="text-center">
+        <h1 class="text-primary font-weight-bold">
+          Aplicacion de Carga de Productos - Mis Mensajes
+        </h1>
+      </header>
+
+      <div class="container-fluid mt-3">
+        <h1>App de Productos - Chat</h1>
+
+        <div id="messages"></div>
+        <br />
+
+        <%- include('../partials/bottom') %>
+
+        <script>
+
+          console.log("<%= useremail %>")
+
+          const dataProductos = fetch("/api/mensajes/usuario/<%= useremail %>")
+            .then((res) => res.json())
+            .then((messages) => {
+              render(messages);
+            })
+            .catch(console.error);
+
+          function render(data) {
+            const html = data
+              .map((elem, index) => {
+                if (elem.type === "usuario") {
+                  return `<div style="text-align: left;" >
+              <span class="text-primary"><strong>${elem.email}</strong></span> <span style="color: brown;">${elem.date}</span>:
+              <em>${elem.body}</em></div>`;
+                } else {
+                  return `<div style="text-align: right;" >
+              <span class="text-primary"><strong>${elem.email}</strong></span> <span style="color: brown;">${elem.date}</span>:
+              <em>${elem.body}</em></div>`;
+                }
+              })
+              .join(" ");
+            document.getElementById("messages").innerHTML = html;
+          }
+        </script>
+      </div>
+    </div>
+  </body>
+</html>

@@ -4,17 +4,45 @@
   <h1>App de Productos - Chat</h1>
 
   <div id="messages"></div>
-  <br>
+  <br />
 
   <form onsubmit="return addMessage(this)" autocomplete="off">
     <div class="form-group">
-      <input type="text" id="userEmail" class="form-control my-2 mr-2" placeholder="Tu Email">
+      <input
+        type="text"
+        id="userEmail"
+        class="form-control my-2 mr-2"
+        placeholder="Tu Email"
+      />
     </div>
     <div class="form-group">
-      <input type="text" id="texto" class="form-control my-2 mr-2" placeholder="Cuéntanos algo...">
+      <input
+        type="text"
+        id="texto"
+        class="form-control my-2 mr-2"
+        placeholder="Cuéntanos algo..."
+      />
     </div>
-    <input class="btn btn-primary my-2" type="submit" value="Enviar!">
+    <input class="btn btn-primary my-2" type="submit" value="Enviar!" />
+  </form>
+
+  <!-- <form onsubmit="return getMyMessages(this)" autocomplete="off"> -->
+  <form
+    action="/chat/<%= useremail %>"
+    method="get"
+  >
+    <input
+      class="btn btn-primary my-2"
+      type="submit"
+      value="Ver mis Mensajes"
+    />
   </form>
 </div>
 
 <%- include('../partials/bottom') %>
+
+<script>
+  const userEmail = "<%= useremail %>";
+
+  // const getMyMessages = fetch(`/api/mensajes/usuario/${userEmail}`)
+</script>

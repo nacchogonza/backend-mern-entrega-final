@@ -18,30 +18,39 @@ class MensajesController {
 
   getMessagesByUserController = async (req, res) => {
     try {
+      const user = req.user;
       const userEmail = req.params.email;
+      if (user.useremail !== userEmail) {
+        res.status(500).json({
+          error: "el mail solicitado no coincide con el usuario logueado",
+        });
+        return;
+      }
+
       const messages = await this.apiMensajes.getMessages();
-      const userMessages = messages.filter(currentMessage => currentMessage.email === userEmail)
-      res.status(200).json(userMessages)
+      const userMessages = messages.filter(
+        (currentMessage) => currentMessage.email === userEmail
+      );
+      res.status(200).json(userMessages);
     } catch (error) {
       console.log("error getMessagesByUserController controller: ", error);
-      res.status(500).json({error: "error getMessagesByUserController"})
+      res.status(500).json({ error: "error getMessagesByUserController" });
     }
-  }
+  };
 
   postMessageController = async (req, res) => {
     try {
       let message = req.body;
       let postedMessage = await this.apiMensajes.postMessage(message);
       if (!postedMessage) {
-        res.json({})
+        res.json({});
       } else {
-
         res.json(postedMessage);
       }
     } catch (error) {
       console.log("error postMessageController: ", error);
     }
-  }
+  };
 
   deleteMessageController = async (req, res) => {
     try {
