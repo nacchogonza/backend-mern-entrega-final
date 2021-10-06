@@ -47,7 +47,6 @@
 
         <script>
 
-          console.log("<%= useremail %>")
 
           const dataProductos = fetch("/api/mensajes/usuario/<%= useremail %>")
             .then((res) => res.json())

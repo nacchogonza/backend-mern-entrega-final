@@ -32,7 +32,9 @@
   <body class="container">
     <div class="bg-light p-5">
       <header class="text-center">
-        <h1 class="text-primary font-weight-bold">Aplicacion de Productos - Mi Carrito</h1>
+        <h1 class="text-primary font-weight-bold">
+          Aplicacion de Productos - Mi Carrito
+        </h1>
       </header>
       <div class="row pt-5" id="carrito"></div>
 
@@ -51,45 +53,65 @@
       </div>
     </div>
   </body>
-</html>
+  <script>
+    async function deleteProductCart(product) {
+      const getProductUrl = `/api/productos/${product}`;
+      const deleteUrl = `/api/carritos`;
 
-<script>
-  console.log("<%= useremail %>");
+      const dbProduct = await fetch(getProductUrl, {
+        method: "GET",
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => {
+          return json[0];
+        });
 
-  
 
-  const dataCarrito = fetch("/api/carritos/<%= useremail %>")
-    .then((res) => res.json())
-    .then((carrito) => {
-      render(carrito);
-    })
-    .catch(console.error);
+      const response = await fetch(deleteUrl, {
+        method: "DELETE",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8", // Indicates the content
+        },
+        body: JSON.stringify(dbProduct),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => console.log("producto eliminado al carrito: ", json));
+      window.location.reload();
+    }
 
-  function render(data) {
-    console.log(data)
-    const html = data.productos
-      .map((elem, index) => {
+    const dataCarrito = fetch("/api/carritos/<%= useremail %>")
+      .then((res) => res.json())
+      .then((carrito) => {
+        render(carrito);
+      })
+      .catch(console.error);
 
+    function render(data) {
+      const html = data.productos
+        .map((elem, index) => {
           return `<div class="col-md-4 pb-5">
-      <div class="card" style="width: 15rem;">
-        <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${elem.product.thumbnail}" alt="Card image cap">
-        <div class="card-body">
-          <h5 class="card-title">${elem.product.title}</h5>
-          <p><b>ID:</b> ${elem.product.id}</p>
-          <p><b>Descripción:</b> ${elem.product.description}</p>
-          <p><b>Precio:</b> ${elem.product.price}</p>
-          <p><b>Code:</b> ${elem.product.code}</p>
-          <p><b>Stock:</b> ${elem.product.stock}</p>
-          <p><b>Cantidad:</b> ${elem.quantity}</p>
-          <div class="text-center pb-2">
-            <button class="btn btn-primary" onclick="deleteProductCart(${elem.product.id})">Eliminar del Carrito</button>
+        <div class="card" style="width: 15rem;">
+          <img style="width: 5rem; height: 5rem;" class="card-img-top mx-auto d-block" src="${elem.product.thumbnail}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">${elem.product.title}</h5>
+            <p><b>ID:</b> ${elem.product._id}</p>
+            <p><b>Categoria:</b> ${elem.product.categoria}</p>
+            <p><b>Descripción:</b> ${elem.product.description}</p>
+            <p><b>Precio:</b> ${elem.product.price}</p>
+            <p><b>Cantidad:</b> ${elem.quantity}</p>
+            <div class="text-center pb-2">
+              <button class="btn btn-primary" onclick="deleteProductCart('${elem.product["_id"]}')">Eliminar del Carrito</button>
+            </div>
           </div>
         </div>
-      </div>
-    </div>`;
-
-      })
-      .join(" ");
-    document.getElementById("carrito").innerHTML = html;
-  }
-</script>
+      </div>`;
+        })
+        .join(" ");
+      document.getElementById("carrito").innerHTML = html;
+    }
+  </script>
+</html>
