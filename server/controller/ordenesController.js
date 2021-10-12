@@ -1,5 +1,5 @@
 import ApiOrdenes from "../api/ordenesApi.js";
-import ApiCarritos from '../api/carritosApi.js';
+import ApiCarritos from "../api/carritosApi.js";
 import ApiProductos from "../api/productosApi.js";
 
 class OrdenesController {
@@ -28,12 +28,14 @@ class OrdenesController {
       let orderAmount = 0;
 
       const updatedProducts = await this.apiProductos.getProductos();
-      const orderItems = carrito.productos.map(currentProduct => {
-        const updatedProduct = updatedProducts.find(product => product._id == currentProduct.product._id);
+      const orderItems = carrito.productos.map((currentProduct) => {
+        const updatedProduct = updatedProducts.find(
+          (product) => product._id == currentProduct.product._id
+        );
 
         /* CASO EN QUE SE HUBIERA ELIMINADO EL PRODUCTO QUE FIGURABA EN EL CARRITO */
         if (!updatedProduct) {
-          return null
+          return null;
         }
 
         const orderItem = {
@@ -41,33 +43,33 @@ class OrdenesController {
           productDescription: currentProduct.product.description,
           productQuantity: currentProduct.quantity,
           productPrice: updatedProduct.price,
-        }
-        orderAmount = orderAmount + (updatedProduct.price * currentProduct.quantity)
+        };
+        orderAmount =
+          orderAmount + updatedProduct.price * currentProduct.quantity;
         return orderItem;
-      })
+      });
 
       const newOrder = {
         items: orderItems,
         orderNumber: ordenes.length + 1,
         timestamp: new Date(),
-        status: 'GENERADA',
+        status: "GENERADA",
         email: user.useremail,
         shippingAddress: user.useraddress,
-        mount: orderAmount
-      }
+        mount: orderAmount,
+      };
       const orden = await this.apiOrdenes.postOrder(newOrder);
 
       /* SI LA ORDEN SE GENERA CORRECTAMENTE, SE ELIMINA POR CONSECUENCIA EL CARRITO UTILIZADO PARA GENERARLA */
       if (orden) {
-        await this.apiCarritos.deleteCart(carrito._id)
-        console.log(`Carrito ${carrito._id} eliminado por generación de orden`)
+        await this.apiCarritos.deleteCart(carrito._id);
+        console.log(`Carrito ${carrito._id} eliminado por generación de orden`);
       }
       res.send(orden);
     } catch (error) {
-      console.log("error getProducts controller: ", error);
+      console.log("error generateOrderController controller: ", error);
     }
-  }
-
+  };
 
   putOrderController = async (req, res) => {
     try {
@@ -77,7 +79,7 @@ class OrdenesController {
     } catch (error) {
       console.log("error getProducts controller: ", error);
     }
-  }
+  };
 
   deleteOrderController = async (req, res) => {
     try {
@@ -87,7 +89,7 @@ class OrdenesController {
     } catch (error) {
       console.log("error getProducts controller: ", error);
     }
-  }
+  };
 
   deleteCart = async (req, res) => {
     try {
@@ -97,7 +99,7 @@ class OrdenesController {
     } catch (error) {
       console.log("error getProducts controller: ", error);
     }
-  }
+  };
 }
 
 export default OrdenesController;

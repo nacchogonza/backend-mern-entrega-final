@@ -8,6 +8,15 @@
     <p>Direccion: <%= useraddress %></p>
     <br /><br />
   </div>
+  <a href="/carrito">
+    <button class="btn btn-primary">Ir al Carrito</button>
+  </a>
+  <br /><br />
+
+  <h3>Listado de Productos</h3>
+    <hr>
+    <div class="row pt-5" id="tablaDeProductos"></div>
+    <br>
 
   <br />
 
@@ -65,10 +74,6 @@
     <input type="hidden" name="isBrowser" value="true" />
     <button type="submit" class="btn btn-primary">Agregar Producto</button>
   </form>
-  <h3>Listado de Productos</h3>
-    <hr>
-    <div class="row pt-5" id="tablaDeProductos"></div>
-    <br>
 </div>
 
 <%- include('../partials/bottom') %>

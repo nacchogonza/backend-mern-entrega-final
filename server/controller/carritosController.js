@@ -50,6 +50,7 @@ class CarritosController {
             {
               quantity: 1,
               product: {
+                _id: producto._id,
                 title: producto.title,
                 price: Number(producto.price),
                 description: producto.description,

@@ -42,12 +42,12 @@
         <button
           id="buttonAgregar"
           type="submit"
-          onclick="confirmCart()"
+          onclick="generateOrder()"
           class="btn btn-primary"
         >
-          Confirmar Carrito
+          Generar Orden
         </button>
-        <a href="/">
+        <a href="/productos">
           <button class="btn btn-primary">Volver al Listado</button>
         </a>
       </div>
@@ -68,7 +68,6 @@
           return json[0];
         });
 
-
       const response = await fetch(deleteUrl, {
         method: "DELETE",
         headers: {
@@ -81,6 +80,31 @@
         })
         .then((json) => console.log("producto eliminado al carrito: ", json));
       window.location.reload();
+    }
+
+    async function generateOrder() {
+      const generateOrderUrl = `/api/ordenes`;
+
+      const cart = await fetch("/api/carritos/<%= useremail %>")
+        .then((res) => {
+          return res.json();
+        })
+        .then((carrito) => {
+          return carrito;
+        })
+
+      const response = await fetch(generateOrderUrl, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8", // Indicates the content
+        },
+        body: JSON.stringify(cart),
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((json) => console.log("Orden generada: ", json));
+      window.location.assign(`/productos`)
     }
 
     const dataCarrito = fetch("/api/carritos/<%= useremail %>")
